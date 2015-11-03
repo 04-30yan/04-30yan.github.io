@@ -41,9 +41,9 @@
 			<nav class="animated">
 				<ul>
 					
-						<li><a href="/">Home</a></li>
+						<li><a href="/">主页|Home</a></li>
 					
-						<li><a href="/archives">Archives</a></li>
+						<li><a href="/archives">所有文章|Archives</a></li>
 					
 					<li>
 					
@@ -111,6 +111,10 @@
 	</article>
 	
 	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
@@ -142,9 +146,18 @@
 	</div>
 	
 	
+	<section class="info">
+		<p> Hello ,I&#39;m haitang Page in github! <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
 	<div class="social-font clearfix">
 		
+		<a href="http://weibo.com/1105946906" target="_blank" title="weibo"></a>
 		
+		
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="github"></a>
 		
 		
 		
@@ -266,7 +279,40 @@ $(document).ready(function(){
 </script>
 
 
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
 
 
 
