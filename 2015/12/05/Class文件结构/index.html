@@ -1,0 +1,382 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JVM原理 篇二 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节
+以上空间的数据项是按照**高位在前**的方式分割成若干个8位字节。Clas">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页|Home</a></li>
+					
+						<li><a href="/archives">所有文章|Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/05/Class文件结构/" title="JVM原理 篇二" itemprop="url">JVM原理 篇二</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T07:15:42.672Z" itemprop="dateModified">2015-12-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），"><span class="toc-number">1.</span> <span class="toc-text">1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_Class文件头:每个Class文件的头四个字节成为魔数（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的"><span class="toc-number">2.</span> <span class="toc-text">2. Class文件头:每个Class文件的头四个字节成为魔数（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字"><span class="toc-number">3.</span> <span class="toc-text">5. 类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；"><span class="toc-number">4.</span> <span class="toc-text">6. Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，"><span class="toc-number">5.</span> <span class="toc-text">7. LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消"><span class="toc-number">6.</span> <span class="toc-text">8. LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消</span></a></li></ol>
+		</div>
+		
+		<h3 id="1-_概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），">1. 概述：Class文件是一组以<strong>8字节</strong>为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），</h3><pre><code>各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节
+以上空间的数据项是按照<span class="keyword">*</span><span class="keyword">*</span>高位在前<span class="keyword">*</span><span class="keyword">*</span>的方式分割成若干个8位字节。Class文件采用只有<span class="keyword">*</span><span class="keyword">*</span>无符号数和表<span class="keyword">*</span><span class="keyword">*</span>的伪
+结构方式来存储数据。
+</code></pre><ul>
+<li><p>无符号数：用u1,u2,u4,u8分别代表1,2,4,8字节的无符号数，可以描述数字，索引引用，数量值，UTF-8编码字符创。     </p>
+</li>
+<li><p>表：由多个无符号数或者其他表作为数据项的符合数据类型，所有表都习惯以“_info”结尾。</p>
+</li>
+</ul>
+<h3 id="2-_Class文件头:每个Class文件的头四个字节成为魔数（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的">2. Class文件头:每个Class文件的头四个字节成为<strong>魔数</strong>（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的</h3><pre><code>Class文件.因为Class文件没有空隙存在，采取伪结构存储数据，所以只能规定一个数让JVM识别Class文件，识别出
+来才会加载。后面四个字节表示的是最小的版本号和最大的版本号，如果此Class文件的第<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>字节
+是<span class="number">0x00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">30</span>，则代表此Class文件只能被<span class="number">1.5</span>及以上版本的虚拟机加载。JVM在加载一个Class文件之前会去检查
+以上<span class="number">8</span>个字节，看是否符合其标准，符合则加载。
+</code></pre><p>###3.  常量池：常量池开始有一个u2类型数据（2字节）代表该类中常量的数量，容量计数是<strong>从1开始</strong>的，<br>               0是保留常量。常量池中主要存放两大类常量：字面量和符号引用。当虚拟机运行时要在常量池中获取符号<br>           引用和字面量（final修饰的常量，也是他之所以不可以改变其值得原因，因为直接保存其字面量值在常量<br>           池中，而不是引用），再在类创建时或者运行时解析，翻译得到具体的内存地址之中。常量池中的每一项常<br>           量都是一个表。每个表开始u1类型数据代表这一项常量是什么类型的常量，后两个字节代表了常量池索引。<br>           指向UTF-8类型常量或者其他类型。</p>
+<ul>
+<li><p>UTF-8常量类型：第一个字节表示该常量是什么类型，后两个字节表示后面所存储的字符串的总字节数，再后面则是内容。<br><img src="http://img.blog.csdn.net/20151107173916776" alt="这里写图片描述"></p>
+</li>
+<li><p>Fieldref、Methodref:第3.4字节表示的是哪个类，类中此常量的位置<br><img src="http://img.blog.csdn.net/20151107212121531" alt="这里写图片描述"></p>
+</li>
+<li>Class常量类型：表示该类的名称，同样，指向另外一个UTF-8类型常量。</li>
+</ul>
+<h3 id="5-_类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字">5. 类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字</h3><pre><code>节代表该类的名称；依次是父类的名称，接口的名称。
+</code></pre><h3 id="6-_Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；">6. Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；</h3><pre><code>            接下来的四个字节代表的是方法的名称和描述，也就是NameType;接下来就是方法内部具体的代
+码实现的定义。两个字节的<span class="keyword">name</span>代表接下来是方法的什么方面的定义，四个字节代表这个方法的
+代码长度；两个字节代表该方法操作数栈深度最大值；两个字节代表局部变量表所需的存储空间,
+单位是slot；如果发现超过这两个值，JVM就会拒绝加载。四个字节代表方法中的的命令有几个字节；
+两个字节代表方法中抛出的异常；接下来是方法中存在的代码属性描述，比如说，行号，<span class="keyword">Class</span>文件
+和源码之间就是通过行号关联起来的。
+</code></pre><h3 id="7-_LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，">7. LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，</h3><pre><code>可以去掉（javac是使用 -g:<span class="attribute">none</span>）。LineNumberTable中包含多个line <span class="tag">a</span>:<span class="tag">b</span>,a代表这行代码在源代码中的行号，
+b代表这行代码的第一条Class文件在此Class文件开始时的字节码偏移量。
+</code></pre><h3 id="8-_LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消">8. LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消</h3><pre><code>（<span class="tag">-g</span><span class="pseudo">:none</span>）<span class="class">.Start</span>表示该变量被复制到局部变量表中，生命周期开始的字节码偏移量，<span class="tag">Length</span>指令表示作用范围覆盖的
+长度，<span class="tag">index</span>是这个局部变量在栈帧局部变量表中<span class="tag">slot</span>的位置。<span class="tag">name_index</span>和<span class="tag">signature</span>指向<span class="tag">UTF-8</span>型常量，分别代表局部
+变量的名字和类型。
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JVM/">JVM</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/12/05/Class文件结构/" data-title="JVM原理 篇二 | Hexo" data-tsina="3917196687" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/12/05/maven/" title="maven 配置和常用命令">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  maven 配置和常用命令</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/12/05/文章标题/"  title="JVM(Java Virtual Machine)原理 篇一">
+ <strong>NEXT:</strong><br/> 
+ <span>JVM(Java Virtual Machine)原理 篇一
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），"><span class="toc-number">1.</span> <span class="toc-text">1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_Class文件头:每个Class文件的头四个字节成为魔数（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的"><span class="toc-number">2.</span> <span class="toc-text">2. Class文件头:每个Class文件的头四个字节成为魔数（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字"><span class="toc-number">3.</span> <span class="toc-text">5. 类信息：常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；"><span class="toc-number">4.</span> <span class="toc-text">6. Fields和Methods定义：前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，"><span class="toc-number">5.</span> <span class="toc-text">7. LineNumbertable:用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消"><span class="toc-number">6.</span> <span class="toc-text">8. LocalVariableTable:用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m haitang Page in github! <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/3917196687" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>

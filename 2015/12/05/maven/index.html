@@ -9,10 +9,12 @@
     
     <meta name="author" content="John Doe">
     
-    <meta name="description" content="1. maven：项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、测试和分发），还可以生成报告，生成Web站点。
+    <meta name="description" content="1. maven：项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、
+测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
+
 - 源代码应该位于&#39;${basedir}/src/main/java&#39;
-- 资源文件应该位于&#39;$">
+- 资源文件应该位于">
     
     
     
@@ -76,7 +78,7 @@ maven的主要约定：
     </p>
   <p class="article-time">
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T06:58:53.912Z" itemprop="dateModified">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T07:09:38.264Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -85,11 +87,13 @@ maven的主要约定：
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_maven："><span class="toc-number">1.</span> <span class="toc-text">1. maven：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_maven目录:"><span class="toc-number">2.</span> <span class="toc-text">2. maven目录:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_配置环境变量："><span class="toc-number">3.</span> <span class="toc-text">3. 配置环境变量：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_设置maven（包括设置本地仓库路径）:"><span class="toc-number">4.</span> <span class="toc-text">4. 设置maven（包括设置本地仓库路径）:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_maven命令："><span class="toc-number">5.</span> <span class="toc-text">5. maven命令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_maven的生命周期："><span class="toc-number">6.</span> <span class="toc-text">6. maven的生命周期：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_maven的坐标：为项目提供唯一标识"><span class="toc-number">7.</span> <span class="toc-text">7. maven的坐标：为项目提供唯一标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_pom文件的元素"><span class="toc-number">8.</span> <span class="toc-text">8. pom文件的元素</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_maven："><span class="toc-number">1.</span> <span class="toc-text">1. maven：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_maven目录:"><span class="toc-number">2.</span> <span class="toc-text">2. maven目录:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_配置环境变量："><span class="toc-number">3.</span> <span class="toc-text">3. 配置环境变量：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_设置maven（包括设置本地仓库路径）:"><span class="toc-number">4.</span> <span class="toc-text">4. 设置maven（包括设置本地仓库路径）:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_maven命令："><span class="toc-number">5.</span> <span class="toc-text">5. maven命令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_maven的生命周期："><span class="toc-number">6.</span> <span class="toc-text">6. maven的生命周期：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_maven的坐标：为项目提供唯一标识"><span class="toc-number">7.</span> <span class="toc-text">7. maven的坐标：为项目提供唯一标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_pom文件的元素"><span class="toc-number">8.</span> <span class="toc-text">8. pom文件的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-_使用maven创建、构建简单的项目"><span class="toc-number">9.</span> <span class="toc-text">9. 使用maven创建、构建简单的项目</span></a></li></ol>
 		</div>
 		
-		<h3 id="1-_maven：">1. maven：</h3><pre><code>项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、测试和分发），还可以生成报告，生成Web站点。
+		<h3 id="1-_maven：">1. maven：</h3><pre><code>项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、
+测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
+
 -<span class="ruby"> 源代码应该位于<span class="string">'${basedir}/src/main/java'</span>
 </span>-<span class="ruby"> 资源文件应该位于<span class="string">'${basedir}/src/main/resources'</span>
 </span>-<span class="ruby"> 测试代码应该位于<span class="string">'${basedir}/src/test'</span>
@@ -108,25 +112,32 @@ maven的主要约定：
 5. 配置环境变量：
      'path'maven安装目录下bin的路径，如："</span><span class="constant">D</span>:\apache-maven-<span class="number">3.3</span>.<span class="number">3</span>\bin<span class="string">"
      'M2_HOME'maven安装路径，如”D:\apache-maven-3.3.3“
-6. 测试，打开cmd，输入'mvn help:system',看到maven不断从网络上下载各种文件，然后显示'System Properties'和'Enviroment Variables',则安装成功</span>
+6. 测试，打开cmd，输入'mvn help:system',看到maven不断从网络上下载各种文件，然后显示
+'System Properties'和'Enviroment Variables',则安装成功</span>
 </code></pre><h3 id="4-_设置maven（包括设置本地仓库路径）:">4. 设置maven（包括设置本地仓库路径）:</h3><pre><code>- 全局方式：在maven安装目录下config<span class="subst">\</span>setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行设置
 - 当前用户方式：通过用户Home中的setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行配置，Windows用户在C:<span class="subst">\</span>Users<span class="subst">\</span>administ<span class="subst">or</span>中
-* <span class="string">'localRepository'</span>设置maven的本地仓库路径
-* <span class="string">'interactiveMode'</span>设置maven是否处于交互模式，‘<span class="literal">false</span>’maven不会提示用户输入，而是智能采用默认值，<span class="string">'true'</span>每当maven需要用户输入时，都会提醒用户输入
-* <span class="string">'offline'</span>设置maven是否处于离线状态，<span class="string">'false'</span>找不到插件，依赖包时从网络上下载
-* <span class="string">'proxies'</span>为maven设置代理服务器
+    * <span class="string">'localRepository'</span>设置maven的本地仓库路径
+
+    * <span class="string">'interactiveMode'</span>设置maven是否处于交互模式，‘<span class="literal">false</span>’maven不会提示用户输入，而是智能采用默认值，
+    <span class="string">'true'</span>每当maven需要用户输入时，都会提醒用户输入
+    * <span class="string">'offline'</span>设置maven是否处于离线状态，<span class="string">'false'</span>找不到插件，依赖包时从网络上下载
+    * <span class="string">'proxies'</span>为maven设置代理服务器
 </code></pre><h3 id="5-_maven命令：">5. maven命令：</h3><pre><code>maven主要的命令mvn，基本格式：'mvn &lt;plugin-group-id&gt;:&lt;plugin-artifact-id&gt;[:&lt;plugin-version&gt;:&lt;goal&gt;]'
+
 -<span class="ruby"> mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件
 </span>-<span class="ruby"> mvn test 单元测试
 </span>-<span class="ruby"> mvn package 项目打包
 </span>-<span class="ruby"> mvn install 安装到本地仓库
 </span>-<span class="ruby"> mvn deploy 部署到远程仓库
 </span>-<span class="ruby"> mvn site 生成站点</span>
-</code></pre><h3 id="6-_maven的生命周期：">6. maven的生命周期：</h3><pre><code>指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段总是按顺序、依次执行。
+</code></pre><h3 id="6-_maven的生命周期：">6. maven的生命周期：</h3><pre><code>指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段
+总是按顺序、依次执行。
 maven包括三个基本的生命周期：
--<span class="ruby"> <span class="symbol">clean:</span>构建项目之前进行清理工作
-</span>-<span class="ruby"> default：包括compile-test-package-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
-</span>-<span class="ruby"> <span class="symbol">site:</span>用于生成项目报告站点，发布站点。</span>
+
+- <span class="string">clean:</span>构建项目之前进行清理工作
+- <span class="keyword">default</span>：包括compile-test-<span class="keyword">package</span>-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，
+  比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
+- <span class="string">site:</span>用于生成项目报告站点，发布站点。
 </code></pre><h3 id="7-_maven的坐标：为项目提供唯一标识">7. maven的坐标：为项目提供唯一标识</h3><pre><code>-<span class="ruby"> groupId：该项目的开发者域名
 </span>-<span class="ruby"> artifactId：指定项目名
 </span>-<span class="ruby"> <span class="symbol">packaging:</span> 指定项目打包的类型比如：jar，war
@@ -134,12 +145,14 @@ maven包括三个基本的生命周期：
 </code></pre><h3 id="8-_pom文件的元素">8. pom文件的元素</h3><pre><code>-<span class="ruby"> &lt;properties.../&gt;<span class="symbol">:</span>定义全局属性
 </span>-<span class="ruby"> &lt;dependency.../&gt;<span class="symbol">:</span>定义依赖关系
 </span>-<span class="ruby"> &lt;scope.../&gt;<span class="symbol">:</span>指定依赖库起作用的范围，有compile,test,runtime,provided,system,import
-</span>    * compile:默认值，编译、测试、打包时使用
+</span>
+    * compile:默认值，编译、测试、打包时使用
     * test:测试时需要
     * runtime:测试、运行、打包时使用，编译时不需要
     * provided:在runtime时使用
     * system:该jar由系统提供，在runtme时使用
     * import:继承父POM中使用dependencymanagement配置的依赖
+
 -<span class="ruby"> &lt;exclusions.../&gt;<span class="symbol">:</span>排除此依赖关系中的某个依赖
 </span>-<span class="ruby"> &lt;type../&gt;<span class="symbol">:</span>指定依赖框架的类型，默认是jar
 </span>-<span class="ruby"> &lt;classifier../&gt;<span class="symbol">:</span>指定<span class="constant">JDK</span>的版本
@@ -152,8 +165,8 @@ maven包括三个基本的生命周期：
 </span>-<span class="ruby"> &lt;scm.../&gt;<span class="symbol">:</span>定义该项目源代码的管理工具
 </span>-<span class="ruby"> &lt;respositories.../&gt;<span class="symbol">:</span>定义远程仓库
 </span>-<span class="ruby"> &lt;distributionmanagement.../&gt;<span class="symbol">:</span>定义部署管理</span>
-</code></pre><p>###9. 使用maven创建、构建简单的项目</p>
-<pre><code><span class="number">1</span>. mvn archetype:generate -DinteractiveMode=false -DgroupId=com<span class="class">.zxy</span> -DartifactId=mavenTest -Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> 生成一个mavenTest的文件夹，就是相关文件
+</code></pre><h3 id="9-_使用maven创建、构建简单的项目">9. 使用maven创建、构建简单的项目</h3><pre><code><span class="number">1</span>. mvn archetype:generate -DinteractiveMode=false -DgroupId=com<span class="class">.zxy</span> -DartifactId=mavenTest 
+   -Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> 生成一个mavenTest的文件夹，就是相关文件
 <span class="number">2</span>. 在pom.xml所在文件夹运行mvn compile
 <span class="number">3</span>. 执行 mvn exec:java -Dexec.mainClass=<span class="string">"com.zxy.mavenTest.App"</span>(需要使用maven的exec插件)
 </code></pre>  
@@ -181,9 +194,9 @@ maven包括三个基本的生命周期：
  
 
 <div class="next">
-<a href="/2015/11/03/hello-world/"  title="Hello World">
+<a href="/2015/12/05/Class文件结构/"  title="JVM原理 篇二">
  <strong>NEXT:</strong><br/> 
- <span>Hello World
+ <span>JVM原理 篇二
 </span>
 </a>
 </div>
@@ -200,7 +213,7 @@ maven包括三个基本的生命周期：
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_maven："><span class="toc-number">1.</span> <span class="toc-text">1. maven：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_maven目录:"><span class="toc-number">2.</span> <span class="toc-text">2. maven目录:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_配置环境变量："><span class="toc-number">3.</span> <span class="toc-text">3. 配置环境变量：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_设置maven（包括设置本地仓库路径）:"><span class="toc-number">4.</span> <span class="toc-text">4. 设置maven（包括设置本地仓库路径）:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_maven命令："><span class="toc-number">5.</span> <span class="toc-text">5. maven命令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_maven的生命周期："><span class="toc-number">6.</span> <span class="toc-text">6. maven的生命周期：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_maven的坐标：为项目提供唯一标识"><span class="toc-number">7.</span> <span class="toc-text">7. maven的坐标：为项目提供唯一标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_pom文件的元素"><span class="toc-number">8.</span> <span class="toc-text">8. pom文件的元素</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_maven："><span class="toc-number">1.</span> <span class="toc-text">1. maven：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_maven目录:"><span class="toc-number">2.</span> <span class="toc-text">2. maven目录:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_配置环境变量："><span class="toc-number">3.</span> <span class="toc-text">3. 配置环境变量：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_设置maven（包括设置本地仓库路径）:"><span class="toc-number">4.</span> <span class="toc-text">4. 设置maven（包括设置本地仓库路径）:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_maven命令："><span class="toc-number">5.</span> <span class="toc-text">5. maven命令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_maven的生命周期："><span class="toc-number">6.</span> <span class="toc-text">6. maven的生命周期：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_maven的坐标：为项目提供唯一标识"><span class="toc-number">7.</span> <span class="toc-text">7. maven的坐标：为项目提供唯一标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_pom文件的元素"><span class="toc-number">8.</span> <span class="toc-text">8. pom文件的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-_使用maven创建、构建简单的项目"><span class="toc-number">9.</span> <span class="toc-text">9. 使用maven创建、构建简单的项目</span></a></li></ol>
   </div>
 
 <div id="asidepart">
@@ -213,6 +226,8 @@ maven包括三个基本的生命周期：
 <div class="tagslist">
 	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>2</sup></a></li>
 		
 			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 		

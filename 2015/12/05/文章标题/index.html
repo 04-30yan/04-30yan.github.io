@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | Hexo</title>
+    <title>JVM(Java Virtual Machine)原理 篇一 | Hexo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="John Doe">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="Javac 编译原理javac编译器的*任务*就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
+源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
+![总述示意图](http://img.blog.csdn.net">
     
     
     
@@ -65,15 +67,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/11/03/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2015/12/05/文章标题/" title="JVM(Java Virtual Machine)原理 篇一" itemprop="url">JVM(Java Virtual Machine)原理 篇一</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://yoursite.com" title="John Doe">John Doe</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-11-03T01:10:15.519Z" itemprop="datePublished">2015-11-03</time>
-    更新日期:<time datetime="2015-11-03T01:10:15.519Z" itemprop="dateModified">2015-11-03</time>
+    <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T07:16:23.410Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -82,28 +84,64 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">Javac 编译原理</span></a></li></ol>
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<h2 id="Javac_编译原理">Javac 编译原理</h2><pre><code>javac编译器的<span class="emphasis">*任务*</span>就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
+源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
+![<span class="link_label">总述示意图</span>](<span class="link_url">http://img.blog.csdn.net/20151104180918590</span>)
+Javac编译器工作原理：
+![<span class="link_label">工作原理示意图</span>](<span class="link_url">http://img.blog.csdn.net/20151104184959544</span>)
+<span class="header">### 1. 词法分析：如，package zxy.demo.example</span>
+Lexer的实现类Scanner和JavacParser,JavaParser规定哪些词符合Java语言规范；Scanner负责单个读取Java源代码，
+然后解析符合Java语言规范的Token序列。如，<span class="strong">**package zxy.demo.example**</span>;
+<span class="strong">**Token.PACKAGE = package，**</span>
+<span class="strong">**Token.IDENTIFIER = zxy.demo.example,**</span>(这部分又分为读取第一个token,为zxy，判断下一个token是否为“.”，
+是的话接着读取下一个Token.IDENTIFIER类型的token，反复直至下一个token不是".",也就说明下一个不是
+Token.IDENIFIER类型的token。)
+<span class="strong">**Token.SEMI = ；**</span>
+至于以上是如何匹配的，KeyWords类负责此任务。
+每个字符集合都是一个<span class="strong">**Name**</span>对象，储存在<span class="strong">**Name.Table**</span>的内部类当中。KeyWords将每个Token.name转化为
+Name对象建立与Token的对应关系，如果在token对应的Name.Table中找不到的话，那就是Token.IDRNIFIER.
+如，原本Name.Table中有很多关键字，比如package，读取第一个token是package，在Name.table中查找，找到，
+保存在KeyWords的key数组中；zxy.demo.example在Name.table中找不到就为Token.IDENIFIER。
+这句代码就分析完毕，形成Token流。 
+<span class="header">### 2. 语法分析</span>
+<span class="code">    将上一步的每一个token组成一个语句。形成package语法树。</span>
+<span class="code">    每个语法节点都会实现一个xxxTree,比如packageTree,都是JCTree的子类。</span>
+JCTree的属性Tree tag:每个语法节点都会以整数的形式表示，下一个节点在上一个节点上1；
+package...;
+import..;
+如，package为1，import就为2。
+pos:储存的是这个语法节点在源代码中的初始位置；
+type:表示这个节点是什么Java类型。
+<span class="header">###3. 语义分析</span>
+符号出入到符号表：将属于此类的符号（包括类中出现的符号、继承的符号等）输入到类自身的符号表中；
+添加默认构造函数：如果类中没有构造函数，则自动添加默认构造函数，有构造函数则不会添加；
+标注：检查语义的合法性并进行逻辑判断，比如：类型是否匹配，使用前是否进行初始化，等；
+数据流分析:检查使用前是否正确赋值，final修饰的变量不能被重复赋值，等；
+对语法树进行语义分析，如消除无用的代码、解除语法糖、如foreach解析成for循环，in到Integer的自动装箱等。
+<span class="header">### 4. 代码生成器</span>
+将Java方法中的代码块转化成符合JVM语法的命令形式，因为JVM操作都是基于栈。所以讲表达式转化为字节码，
+比如int a=1; 
+float b=3.0;return (a+b);
+用javap专门用于分析字节码的工具，转化为JVM就是    
+</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:iconst_1</span><br><span class="line"><span class="number">1</span>:istore_1</span><br><span class="line"><span class="number">2</span>:fconst_3<span class="number">.0</span></span><br><span class="line"><span class="number">3</span>:fstore_2</span><br><span class="line"><span class="number">4</span>:iload_1</span><br><span class="line"><span class="number">5</span>:fload_2;</span><br><span class="line"><span class="number">4</span>:fadd</span><br><span class="line"><span class="number">5</span>:freturn</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JVM/">JVM</a>
+  </div>
 
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2015/11/03/hello-world/" data-title="Hello World | Hexo" data-tsina="3917196687" class="share clearfix">
+  <div data-url="http://yoursite.com/2015/12/05/文章标题/" data-title="JVM(Java Virtual Machine)原理 篇一 | Hexo" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -113,13 +151,21 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/12/05/文章标题/" title="JVM(Java Virtual Machine)原理 篇一">
+ <a href="/2015/12/05/Class文件结构/" title="JVM原理 篇二">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  JVM(Java Virtual Machine)原理 篇一</span>
+  JVM原理 篇二</span>
 </a>
 </div>
 
+
+<div class="next">
+<a href="/2015/11/03/hello-world/"  title="Hello World">
+ <strong>NEXT:</strong><br/> 
+ <span>Hello World
+</span>
+</a>
+</div>
 
 </nav>
 
@@ -133,7 +179,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">Javac 编译原理</span></a></li></ol>
   </div>
 
 <div id="asidepart">
