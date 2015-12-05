@@ -86,8 +86,7 @@ maven的主要约定：
     <h1 itemprop="name">JVM原理 篇二</h1>
     
      
-           <p itemprop="description" >1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码），各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节
-以上空间的数据项是按照**高位在前**的方式分割成若干</p>
+           <p itemprop="description" >1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码）,各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节以上空间的数据项是按照高位在前的方式分割成若干个8位字节</p>
         
     
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
@@ -103,7 +102,8 @@ maven的主要约定：
      
            <p itemprop="description" >Javac 编译原理javac编译器的*任务*就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
 源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
-![总述示意图](http://img.blo</p>
+
+![总述示意图](http://img.bl</p>
         
     
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
