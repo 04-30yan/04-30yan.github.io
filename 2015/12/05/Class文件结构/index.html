@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>JVM原理 篇二 | Hexo</title>
+    <title>JVM原理 篇二 Class文件结构 | Hexo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="John Doe">
     
-    <meta name="description" content="1. 概述：Class文件是一组以8字节为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码）,各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节以上空间的数据项是按照高位在前的方式分割成若干个8位字节。Class文件采用">
+    <meta name="description" content="1. 概述：Class文件是一组以**8字节**为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码）,各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节以上空间的数据项是按照**高位在前**的方式分割成若干个8位字节。C">
     
     
     
@@ -65,7 +65,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/05/Class文件结构/" title="JVM原理 篇二" itemprop="url">JVM原理 篇二</a>
+      <a href="/2015/12/05/Class文件结构/" title="JVM原理 篇二 Class文件结构" itemprop="url">JVM原理 篇二 Class文件结构</a>
   </h1>
   <p class="article-author">By
     
@@ -73,7 +73,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T07:30:10.049Z" itemprop="dateModified">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T07:37:45.509Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -85,27 +85,33 @@
 		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_概述："><span class="toc-number">1.</span> <span class="toc-text">1. 概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_Class文件头:"><span class="toc-number">2.</span> <span class="toc-text">2. Class文件头:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_常量池："><span class="toc-number">3.</span> <span class="toc-text">3.  常量池：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_类信息："><span class="toc-number">4.</span> <span class="toc-text">5. 类信息：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_Fields和Methods定义："><span class="toc-number">5.</span> <span class="toc-text">6. Fields和Methods定义：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_LineNumbertable:"><span class="toc-number">6.</span> <span class="toc-text">7. LineNumbertable:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-_LocalVariableTable:"><span class="toc-number">7.</span> <span class="toc-text">8. LocalVariableTable:</span></a></li></ol>
 		</div>
 		
-		<h3 id="1-_概述：">1. 概述：</h3><p>Class文件是一组以<strong>8字节</strong>为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码）,各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节以上空间的数据项是按照<strong>高位在前</strong>的方式分割成若干个8位字节。Class文件采用只有<strong>无符号数和表</strong>的伪结构方式来存储数据。</p>
-<ul>
-<li><p>无符号数：用u1,u2,u4,u8分别代表1,2,4,8字节的无符号数，可以描述数字，索引引用，数量值，UTF-8编码字符创。     </p>
-</li>
-<li><p>表：由多个无符号数或者其他表作为数据项的符合数据类型，所有表都习惯以“_info”结尾。</p>
-</li>
-</ul>
-<h3 id="2-_Class文件头:">2. Class文件头:</h3><p>每个Class文件的头四个字节成为<strong>魔数</strong>（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的<br>       Class文件.因为Class文件没有空隙存在，采取伪结构存储数据，所以只能规定一个数让JVM识别Class文件，识别出<br>       来才会加载。后面四个字节表示的是最小的版本号和最大的版本号，如果此Class文件的第5,6,7,8字节<br>       是0x00 00 00 30，则代表此Class文件只能被1.5及以上版本的虚拟机加载。JVM在加载一个Class文件之前会去检查<br>       以上8个字节，看是否符合其标准，符合则加载。</p>
-<h3 id="3-_常量池：">3.  常量池：</h3><p>常量池开始有一个u2类型数据（2字节）代表该类中常量的数量，容量计数是<strong>从1开始</strong>的，0是保留常量。常量池中主要存放两大类常量：字面量和符号引用。当虚拟机运行时要在常量池中获取符号<br>引用和字面量（final修饰的常量，也是他之所以不可以改变其值得原因，因为直接保存其字面量值在常量池中，而不是引用），再在类创建时或者运行时解析，翻译得到具体的内存地址之中。常量池中的每一项常<br>量都是一个表。每个表开始u1类型数据代表这一项常量是什么类型的常量，后两个字节代表了常量池索引。指向UTF-8类型常量或者其他类型。</p>
-<ul>
+		<h3 id="1-_概述：">1. 概述：</h3><pre><code>Class文件是一组以<span class="keyword">*</span><span class="keyword">*</span>8字节<span class="keyword">*</span><span class="keyword">*</span>为基础单位的二进制流（JVM相当于一个虚拟的计算机，计算机只能识别0,1代码）,各个数据项目都按照顺序进奏地排列在Class文件中，中间没有任何分隔号，节约内存。当遇到需要占用8位字节以上空间的数据项是按照<span class="keyword">*</span><span class="keyword">*</span>高位在前<span class="keyword">*</span><span class="keyword">*</span>的方式分割成若干个8位字节。Class文件采用只有<span class="keyword">*</span><span class="keyword">*</span>无符号数和表<span class="keyword">*</span><span class="keyword">*</span>的伪结构方式来存储数据。
+
+     - 无符号数：用u1,u2,u4,u8分别代表1,2,4,8字节的无符号数，可以描述数字，索引引用，数量值，UTF-8编码字符创。     
+
+     - 表：由多个无符号数或者其他表作为数据项的符合数据类型，所有表都习惯以“_info”结尾。
+</code></pre><h3 id="2-_Class文件头:">2. Class文件头:</h3><pre><code>每个Class文件的头四个字节成为**魔数**（CAFEBABE），确定这个文件是否为一个能被虚拟机接受的
+   Class文件.因为Class文件没有空隙存在，采取伪结构存储数据，所以只能规定一个数让JVM识别Class文件，识别出
+   来才会加载。后面四个字节表示的是最小的版本号和最大的版本号，如果此Class文件的第<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>字节
+   是<span class="number">0x00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">30</span>，则代表此Class文件只能被<span class="number">1.5</span>及以上版本的虚拟机加载。JVM在加载一个Class文件之前会去检查
+   以上<span class="number">8</span>个字节，看是否符合其标准，符合则加载。
+</code></pre><h3 id="3-_常量池：">3.  常量池：</h3><pre><code>常量池开始有一个u2类型数据（<span class="number">2</span>字节）代表该类中常量的数量，容量计数是**从<span class="number">1</span>开始**的，<span class="number">0</span>是保留常量。常量池中主要存放两大类常量：字面量和符号引用。当虚拟机运行时要在常量池中获取符号
+引用和字面量（final修饰的常量，也是他之所以不可以改变其值得原因，因为直接保存其字面量值在常量池中，而不是引用），再在类创建时或者运行时解析，翻译得到具体的内存地址之中。常量池中的每一项常
+量都是一个表。每个表开始u1类型数据代表这一项常量是什么类型的常量，后两个字节代表了常量池索引。指向UTF-<span class="number">8</span>类型常量或者其他类型。
+</code></pre><ul>
 <li><p>UTF-8常量类型：第一个字节表示该常量是什么类型，后两个字节表示后面所存储的字符串的总字节数，再后面则是内容。<br><img src="http://img.blog.csdn.net/20151107173916776" alt=""></p>
 </li>
 <li><p>Fieldref、Methodref:第3.4字节表示的是哪个类，类中此常量的位置<br><img src="http://img.blog.csdn.net/20151107212121531" alt=""></p>
 </li>
 <li>Class常量类型：表示该类的名称，同样，指向另外一个UTF-8类型常量。</li>
 </ul>
-<h3 id="5-_类信息：">5. 类信息：</h3><p>常量池后面就是关于类本身的信息描述（共8个字节），由两个字节表示这个类的访问控制描述；后面两个字节代表该类的名称；依次是父类的名称，接口的名称。</p>
-<h3 id="6-_Fields和Methods定义：">6. Fields和Methods定义：</h3><p>前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制接下来的四个字节代表的是方法的名称和描述，也就是NameType;接下来就是方法内部具体的代码实现的定义。两个字节的name代表接下来是方法的什么方面的定义，四个字节代表这个方法的<br>代码长度；两个字节代表该方法操作数栈深度最大值；两个字节代表局部变量表所需的存储空间,单位是slot；如果发现超过这两个值，JVM就会拒绝加载。四个字节代表方法中的的命令有几个字节；<br>两个字节代表方法中抛出的异常；接下来是方法中存在的代码属性描述，比如说，行号，Class文件和源码之间就是通过行号关联起来的。</p>
-<h3 id="7-_LineNumbertable:">7. LineNumbertable:</h3><p>用于描述Java源代码和字节码之间的对应关系。默认生成到Class文件中，不是必须的，可以去掉（javac是使用 -g:none）。LineNumberTable中包含多个line a:b,a代表这行代码在源代码中的行号，b代表这行代码的第一条Class文件在此Class文件开始时的字节码偏移量。</p>
-<h3 id="8-_LocalVariableTable:">8. LocalVariableTable:</h3><p>用于描述栈帧中局部变量表中的变量和Java源码中定义的变量只能建的关系，默认生成，可以取消（-g:none）.Start表示该变量被复制到局部变量表中，生命周期开始的字节码偏移量，Length指令表示作用范围覆盖的长度，index是这个局部变量在栈帧局部变量表中slot的位置。name_index和signature指向UTF-8型常量，分别代表局部变量的名字和类型。</p>
-  
+<h3 id="5-_类信息：">5. 类信息：</h3><pre><code>常量池后面就是关于类本身的信息描述（共<span class="number">8</span>个字节），由两个字节表示这个类的访问控制描述；后面两个字节代表该类的名称；依次是父类的名称，接口的名称。
+</code></pre><h3 id="6-_Fields和Methods定义：">6. Fields和Methods定义：</h3><pre><code>前四个字节分别代表该类中定义了多少属性和多少方法；两个字节表示方法和属性的访问控制接下来的四个字节代表的是方法的名称和描述，也就是NameType;接下来就是方法内部具体的代码实现的定义。两个字节的<span class="keyword">name</span>代表接下来是方法的什么方面的定义，四个字节代表这个方法的
+代码长度；两个字节代表该方法操作数栈深度最大值；两个字节代表局部变量表所需的存储空间,单位是slot；如果发现超过这两个值，JVM就会拒绝加载。四个字节代表方法中的的命令有几个字节；
+两个字节代表方法中抛出的异常；接下来是方法中存在的代码属性描述，比如说，行号，<span class="keyword">Class</span>文件和源码之间就是通过行号关联起来的。
+</code></pre><h3 id="7-_LineNumbertable:">7. LineNumbertable:</h3><pre><code>用于描述Java源代码和字节码之间的对应关系。默认生成到<span class="keyword">Class</span>文件中，不是必须的，可以去掉（javac是使用 -<span class="keyword">g</span>:none）。LineNumberTable中包含多个<span class="keyword">line</span> a:b,a代表这行代码在源代码中的行号，b代表这行代码的第一条<span class="keyword">Class</span>文件在此<span class="keyword">Class</span>文件开始时的字节码偏移量。
+</code></pre><h3 id="8-_LocalVariableTable:">8. LocalVariableTable:</h3><pre><code>用于描述栈帧中局部变量表中的变量和<span class="tag">Java</span>源码中定义的变量只能建的关系，默认生成，可以取消（<span class="tag">-g</span><span class="pseudo">:none</span>）<span class="class">.Start</span>表示该变量被复制到局部变量表中，生命周期开始的字节码偏移量，<span class="tag">Length</span>指令表示作用范围覆盖的长度，<span class="tag">index</span>是这个局部变量在栈帧局部变量表中<span class="tag">slot</span>的位置。<span class="tag">name_index</span>和<span class="tag">signature</span>指向<span class="tag">UTF-8</span>型常量，分别代表局部变量的名字和类型。
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -119,7 +125,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2015/12/05/Class文件结构/" data-title="JVM原理 篇二 | Hexo" data-tsina="3917196687" class="share clearfix">
+  <div data-url="http://yoursite.com/2015/12/05/Class文件结构/" data-title="JVM原理 篇二 Class文件结构 | Hexo" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -138,9 +144,9 @@
 
 
 <div class="next">
-<a href="/2015/12/05/文章标题/"  title="JVM(Java Virtual Machine)原理 篇一">
+<a href="/2015/12/05/文章标题/"  title="JVM(Java Virtual Machine)原理 篇一 Java编译原理">
  <strong>NEXT:</strong><br/> 
- <span>JVM(Java Virtual Machine)原理 篇一
+ <span>JVM(Java Virtual Machine)原理 篇一 Java编译原理
 </span>
 </a>
 </div>
