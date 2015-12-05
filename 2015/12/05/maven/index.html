@@ -13,8 +13,8 @@
 测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
 
-    - 源代码应该位于&#39;${basedir}/src/main/java&#39;
-    - ">
+源代码应该位于’${basedir}/src/main/java’
+资源文件应该位于’${b">
     
     
     
@@ -78,7 +78,7 @@ maven的主要约定：
     </p>
   <p class="article-time">
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T10:08:29.692Z" itemprop="dateModified">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T10:49:54.798Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -93,83 +93,92 @@ maven的主要约定：
 		<h3 id="1-_maven：">1. maven：</h3><pre><code>项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、
 测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
-
-    -<span class="ruby"> 源代码应该位于<span class="string">'${basedir}/src/main/java'</span>
-</span>    -<span class="ruby"> 资源文件应该位于<span class="string">'${basedir}/src/main/resources'</span>
-</span>    -<span class="ruby"> 测试代码应该位于<span class="string">'${basedir}/src/test'</span>
-</span>    -<span class="ruby"> 编译生成的<span class="class"><span class="keyword">class</span>文件应该位于'${<span class="title">basedir</span>}/<span class="title">target</span>/<span class="title">classes</span>'</span></span>
-</code></pre><h3 id="2-_maven目录:">2. maven目录:</h3><pre><code>- <span class="symbol">bin:</span>保存maven的可执行命令
-- boot：只包含一个plexus-classwords-<span class="number">2.5</span>.<span class="number">1</span>.jar（类加载框架），maven使用此加载框架加载自己。
-- conf：保存配置文件的目录，包括setting.xml，配置全局行为
-- <span class="class"><span class="keyword">lib</span>：包含所有<span class="title">maven</span>运行时需要的类库</span>
-</code></pre><h3 id="3-_配置环境变量：">3. 配置环境变量：</h3><pre><code><span class="number">1</span>. 安装<span class="constant">JDK</span>
-<span class="number">2</span>.  配置环境变量：
-   <span class="string">'path'</span>:jdk安装目录下bin的路径，如”<span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\bin“
-   <span class="string">'classpath：'</span>jdk安装目录下的<span class="class"><span class="keyword">lib</span>路径，如”.;</span><span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\<span class="class"><span class="keyword">lib</span>“（".;</span><span class="string">"表示当前路径）
-   'JAVA_HOME'jdk安装路径，如：”E:\java\jdk\jdk1.7.0_40“
-3. 测试，打开cmd，输入'java'或者'javac'或者'java -version'成功运行，则安装成功
-4. 安装maven
-5. 配置环境变量：
-     'path'maven安装目录下bin的路径，如："</span><span class="constant">D</span>:\apache-maven-<span class="number">3.3</span>.<span class="number">3</span>\bin<span class="string">"
-     'M2_HOME'maven安装路径，如”D:\apache-maven-3.3.3“
-6. 测试，打开cmd，输入'mvn help:system',看到maven不断从网络上下载各种文件，然后显示
-'System Properties'和'Enviroment Variables',则安装成功</span>
-</code></pre><h3 id="4-_设置maven（包括设置本地仓库路径）:">4. 设置maven（包括设置本地仓库路径）:</h3><pre><code>- 全局方式：在maven安装目录下config<span class="subst">\</span>setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行设置
-- 当前用户方式：通过用户Home中的setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行配置，Windows用户在C:<span class="subst">\</span>Users<span class="subst">\</span>administ<span class="subst">or</span>中
-    * <span class="string">'localRepository'</span>设置maven的本地仓库路径
-
-    * <span class="string">'interactiveMode'</span>设置maven是否处于交互模式，‘<span class="literal">false</span>’maven不会提示用户输入，而是智能采用默认值，
-    <span class="string">'true'</span>每当maven需要用户输入时，都会提醒用户输入
-    * <span class="string">'offline'</span>设置maven是否处于离线状态，<span class="string">'false'</span>找不到插件，依赖包时从网络上下载
-    * <span class="string">'proxies'</span>为maven设置代理服务器
-</code></pre><h3 id="5-_maven命令：">5. maven命令：</h3><pre><code>maven主要的命令mvn，基本格式：'mvn &lt;plugin-group-id&gt;:&lt;plugin-artifact-id&gt;[:&lt;plugin-version&gt;:&lt;goal&gt;]'
-
-    -<span class="ruby"> mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件
-</span>    -<span class="ruby"> mvn test 单元测试
-</span>    -<span class="ruby"> mvn package 项目打包
-</span>    -<span class="ruby"> mvn install 安装到本地仓库
-</span>    -<span class="ruby"> mvn deploy 部署到远程仓库
-</span>    -<span class="ruby"> mvn site 生成站点</span>
-</code></pre><h3 id="6-_maven的生命周期：">6. maven的生命周期：</h3><pre><code>指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段
+</code></pre><ul>
+<li>源代码应该位于’${basedir}/src/main/java’</li>
+<li>资源文件应该位于’${basedir}/src/main/resources’</li>
+<li>测试代码应该位于’${basedir}/src/test’</li>
+<li>编译生成的class文件应该位于’${basedir}/target/classes’</li>
+</ul>
+<h3 id="2-_maven目录:">2. maven目录:</h3><ul>
+<li>bin:保存maven的可执行命令</li>
+<li>boot：只包含一个plexus-classwords-2.5.1.jar（类加载框架），maven使用此加载框架加载自己。</li>
+<li>conf：保存配置文件的目录，包括setting.xml，配置全局行为</li>
+<li>lib：包含所有maven运行时需要的类库</li>
+</ul>
+<h3 id="3-_配置环境变量：">3. 配置环境变量：</h3><ol>
+<li>安装JDK</li>
+<li>配置环境变量：<br>‘path’:jdk安装目录下bin的路径，如”E:\java\jdk\jdk1.7.0_40\bin“<br>‘classpath：’jdk安装目录下的lib路径，如”.;E:\java\jdk\jdk1.7.0_40\lib“（”.;”表示当前路径）<br>‘JAVA_HOME’jdk安装路径，如：”E:\java\jdk\jdk1.7.0_40“</li>
+<li>测试，打开cmd，输入’java’或者’javac’或者’java -version’成功运行，则安装成功</li>
+<li>安装maven</li>
+<li>配置环境变量：<br>‘path’maven安装目录下bin的路径，如：”D:\apache-maven-3.3.3\bin”<br>‘M2_HOME’maven安装路径，如”D:\apache-maven-3.3.3“</li>
+<li>测试，打开cmd，输入’mvn help:system’,看到maven不断从网络上下载各种文件，然后显示<br>‘System Properties’和’Enviroment Variables’,则安装成功</li>
+</ol>
+<h3 id="4-_设置maven（包括设置本地仓库路径）:">4. 设置maven（包括设置本地仓库路径）:</h3><ul>
+<li>全局方式：在maven安装目录下config\setting.xml文件进行设置</li>
+<li>当前用户方式：通过用户Home中的setting.xml文件进行配置，Windows用户在C:\Users\administor中<ul>
+<li>‘localRepository’设置maven的本地仓库路径</li>
+<li>‘interactiveMode’设置maven是否处于交互模式，‘false’maven不会提示用户输入，而是智能采用默认值，<br>‘true’每当maven需要用户输入时，都会提醒用户输入</li>
+<li>‘offline’设置maven是否处于离线状态，’false’找不到插件，依赖包时从网络上下载</li>
+<li>‘proxies’为maven设置代理服务器</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-_maven命令：">5. maven命令：</h3><pre><code>maven主要的命令mvn，基本格式：<span class="comment">'mvn <span class="xmlDocTag">&lt;plugin-group-id&gt;</span>:<span class="xmlDocTag">&lt;plugin-artifact-id&gt;</span>[:<span class="xmlDocTag">&lt;plugin-version&gt;</span>:<span class="xmlDocTag">&lt;goal&gt;</span>]'</span>
+</code></pre><ul>
+<li>mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件</li>
+<li>mvn test 单元测试</li>
+<li>mvn package 项目打包</li>
+<li>mvn install 安装到本地仓库</li>
+<li>mvn deploy 部署到远程仓库</li>
+<li>mvn site 生成站点</li>
+</ul>
+<h3 id="6-_maven的生命周期：">6. maven的生命周期：</h3><pre><code>指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段
 总是按顺序、依次执行。
 maven包括三个基本的生命周期：
-
-    - <span class="string">clean:</span>构建项目之前进行清理工作
-    - <span class="keyword">default</span>：包括compile-test-<span class="keyword">package</span>-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，
-      比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
-    - <span class="string">site:</span>用于生成项目报告站点，发布站点。
-</code></pre><h3 id="7-_maven的坐标：为项目提供唯一标识">7. maven的坐标：为项目提供唯一标识</h3><pre><code>-<span class="ruby"> groupId：该项目的开发者域名
-</span>-<span class="ruby"> artifactId：指定项目名
-</span>-<span class="ruby"> <span class="symbol">packaging:</span> 指定项目打包的类型比如：jar，war
-</span>-<span class="ruby"> <span class="symbol">version:</span> 指定项目的版本</span>
-</code></pre><h3 id="8-_pom文件的元素">8. pom文件的元素</h3><pre><code>-<span class="ruby"> &lt;properties.../&gt;<span class="symbol">:</span>定义全局属性
-</span>-<span class="ruby"> &lt;dependency.../&gt;<span class="symbol">:</span>定义依赖关系
-</span>-<span class="ruby"> &lt;scope.../&gt;<span class="symbol">:</span>指定依赖库起作用的范围，有compile,test,runtime,provided,system,import
-</span>
-    * compile:默认值，编译、测试、打包时使用
-    * test:测试时需要
-    * runtime:测试、运行、打包时使用，编译时不需要
-    * provided:在runtime时使用
-    * system:该jar由系统提供，在runtme时使用
-    * import:继承父POM中使用dependencymanagement配置的依赖
-
--<span class="ruby"> &lt;exclusions.../&gt;<span class="symbol">:</span>排除此依赖关系中的某个依赖
-</span>-<span class="ruby"> &lt;type../&gt;<span class="symbol">:</span>指定依赖框架的类型，默认是jar
-</span>-<span class="ruby"> &lt;classifier../&gt;<span class="symbol">:</span>指定<span class="constant">JDK</span>的版本
-</span>-<span class="ruby"> &lt;dependencymanagement.../&gt;<span class="symbol">:</span>定义依赖管理
-</span>-<span class="ruby"> &lt;build.../&gt;<span class="symbol">:</span>定义构建关系
-</span>-<span class="ruby"> &lt;erganization.../&gt;<span class="symbol">:</span>指定项目所属的组织信息
-</span>-<span class="ruby"> &lt;developers.../&gt;<span class="symbol">:</span>配置项目开发者信息
-</span>-<span class="ruby"> &lt;contributors.../&gt;<span class="symbol">:</span>该项目的贡献者信息
-</span>-<span class="ruby"> &lt;issueManagement.../&gt;<span class="symbol">:</span>定义该项目的bug追踪系统
-</span>-<span class="ruby"> &lt;scm.../&gt;<span class="symbol">:</span>定义该项目源代码的管理工具
-</span>-<span class="ruby"> &lt;respositories.../&gt;<span class="symbol">:</span>定义远程仓库
-</span>-<span class="ruby"> &lt;distributionmanagement.../&gt;<span class="symbol">:</span>定义部署管理</span>
-</code></pre><h3 id="9-_使用maven创建、构建简单的项目">9. 使用maven创建、构建简单的项目</h3><pre><code><span class="number">1</span>. mvn archetype:generate -DinteractiveMode=false -DgroupId=com<span class="class">.zxy</span> -DartifactId=mavenTest 
-   -Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> 生成一个mavenTest的文件夹，就是相关文件
-<span class="number">2</span>. 在pom.xml所在文件夹运行mvn compile
-<span class="number">3</span>. 执行 mvn exec:java -Dexec.mainClass=<span class="string">"com.zxy.mavenTest.App"</span>(需要使用maven的exec插件)
-</code></pre>  
+</code></pre><ul>
+<li>clean:构建项目之前进行清理工作</li>
+<li>default：包括compile-test-package-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，<pre><code>比如，执行'mvn <span class="keyword">install</span>'，会先从clean开始执行，一直执行到<span class="keyword">install</span>
+</code></pre></li>
+<li>site:用于生成项目报告站点，发布站点。</li>
+</ul>
+<h3 id="7-_maven的坐标：为项目提供唯一标识">7. maven的坐标：为项目提供唯一标识</h3><ul>
+<li>groupId：该项目的开发者域名</li>
+<li>artifactId：指定项目名</li>
+<li>packaging: 指定项目打包的类型比如：jar，war</li>
+<li>version: 指定项目的版本</li>
+</ul>
+<h3 id="8-_pom文件的元素">8. pom文件的元素</h3><ul>
+<li><properties...>:定义全局属性</properties...></li>
+<li><dependency...>:定义依赖关系</dependency...></li>
+<li><scope...>:指定依赖库起作用的范围，有compile,test,runtime,provided,system,import<ul>
+<li>compile:默认值，编译、测试、打包时使用</li>
+<li>test:测试时需要</li>
+<li>runtime:测试、运行、打包时使用，编译时不需要</li>
+<li>provided:在runtime时使用</li>
+<li>system:该jar由系统提供，在runtme时使用</li>
+<li>import:继承父POM中使用dependencymanagement配置的依赖</li>
+</ul>
+</scope...></li>
+<li><exclusions...>:排除此依赖关系中的某个依赖</exclusions...></li>
+<li><type..>:指定依赖框架的类型，默认是jar</type..></li>
+<li><classifier..>:指定JDK的版本</classifier..></li>
+<li><dependencymanagement...>:定义依赖管理</dependencymanagement...></li>
+<li><build...>:定义构建关系</build...></li>
+<li><erganization...>:指定项目所属的组织信息</erganization...></li>
+<li><developers...>:配置项目开发者信息</developers...></li>
+<li><contributors...>:该项目的贡献者信息</contributors...></li>
+<li><issuemanagement...>:定义该项目的bug追踪系统</issuemanagement...></li>
+<li><scm...>:定义该项目源代码的管理工具</scm...></li>
+<li><respositories...>:定义远程仓库</respositories...></li>
+<li><distributionmanagement...>:定义部署管理</distributionmanagement...></li>
+</ul>
+<h3 id="9-_使用maven创建、构建简单的项目">9. 使用maven创建、构建简单的项目</h3><ol>
+<li>mvn archetype:generate -DinteractiveMode=false -DgroupId=com.zxy -DartifactId=mavenTest <pre><code>-Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> 生成一个mavenTest的文件夹，就是相关文件
+</code></pre></li>
+<li>在pom.xml所在文件夹运行mvn compile</li>
+<li>执行 mvn exec:java -Dexec.mainClass=”com.zxy.mavenTest.App”(需要使用maven的exec插件)</li>
+</ol>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -226,6 +235,8 @@ maven包括三个基本的生命周期：
 <div class="tagslist">
 	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
+		
+			<li><a href="/tags/JDK插件/" title="JDK插件">JDK插件<sup>1</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>2</sup></a></li>
 		
