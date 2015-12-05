@@ -1,0 +1,415 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="#maven 配置和常用命令
+标签：maven###1. maven：    项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、测试和分发），还可以生成报告，生成Web站点。    maven的主要约定：
+- 源代码应该位于&#39;${bas">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页|Home</a></li>
+					
+						<li><a href="/archives">所有文章|Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/05/maven/" title="" itemprop="url"></a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-05T06:40:31.263Z" itemprop="datePublished">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T06:40:31.263Z" itemprop="dateModified">2015-12-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标签：maven"><span class="toc-number">1.</span> <span class="toc-text">标签：maven</span></a></li></ol>
+		</div>
+		
+		<p>#maven 配置和常用命令</p>
+<h2 id="标签：maven">标签：maven</h2><p>###1. maven：<br>    项目管理器，采用“约定优于配置（COC）”的策略来管理项目。它不仅用于把源代码构建成可发布的项目（包括编译、打包、测试和分发），还可以生成报告，生成Web站点。<br>    maven的主要约定：</p>
+<pre><code>-<span class="ruby"> 源代码应该位于<span class="string">'${basedir}/src/main/java'</span>
+</span>-<span class="ruby"> 资源文件应该位于<span class="string">'${basedir}/src/main/resources'</span>
+</span>-<span class="ruby"> 测试代码应该位于<span class="string">'${basedir}/src/test'</span>
+</span>-<span class="ruby"> 编译生成的<span class="class"><span class="keyword">class</span>文件应该位于'${<span class="title">basedir</span>}/<span class="title">target</span>/<span class="title">classes</span>'</span></span>
+</code></pre><p>###2. maven目录:</p>
+<pre><code>- <span class="symbol">bin:</span>保存maven的可执行命令
+- boot：只包含一个plexus-classwords-<span class="number">2.5</span>.<span class="number">1</span>.jar（类加载框架），maven使用此加载框架加载自己。
+- conf：保存配置文件的目录，包括setting.xml，配置全局行为
+- <span class="class"><span class="keyword">lib</span>：包含所有<span class="title">maven</span>运行时需要的类库</span>
+</code></pre><p>###3. 配置环境变量：</p>
+<pre><code><span class="number">1</span>. 安装<span class="constant">JDK</span>
+<span class="number">2</span>.  配置环境变量：
+   <span class="string">'path'</span>:jdk安装目录下bin的路径，如”<span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\bin“
+   <span class="string">'classpath：'</span>jdk安装目录下的<span class="class"><span class="keyword">lib</span>路径，如”.;</span><span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\<span class="class"><span class="keyword">lib</span>“（".;</span><span class="string">"表示当前路径）
+   'JAVA_HOME'jdk安装路径，如：”E:\java\jdk\jdk1.7.0_40“
+3. 测试，打开cmd，输入'java'或者'javac'或者'java -version'成功运行，则安装成功
+4. 安装maven
+5. 配置环境变量：
+     'path'maven安装目录下bin的路径，如："</span><span class="constant">D</span>:\apache-maven-<span class="number">3.3</span>.<span class="number">3</span>\bin<span class="string">"
+     'M2_HOME'maven安装路径，如”D:\apache-maven-3.3.3“
+6. 测试，打开cmd，输入'mvn help:system',看到maven不断从网络上下载各种文件，然后显示'System Properties'和'Enviroment Variables',则安装成功</span>
+</code></pre><p>###4. 设置maven（包括设置本地仓库路径）:</p>
+<pre><code>- 全局方式：在maven安装目录下config<span class="subst">\</span>setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行设置
+- 当前用户方式：通过用户Home中的setting<span class="built_in">.</span><span class="built_in">xml</span>文件进行配置，Windows用户在C:<span class="subst">\</span>Users<span class="subst">\</span>administ<span class="subst">or</span>中
+* <span class="string">'localRepository'</span>设置maven的本地仓库路径
+* <span class="string">'interactiveMode'</span>设置maven是否处于交互模式，‘<span class="literal">false</span>’maven不会提示用户输入，而是智能采用默认值，<span class="string">'true'</span>每当maven需要用户输入时，都会提醒用户输入
+* <span class="string">'offline'</span>设置maven是否处于离线状态，<span class="string">'false'</span>找不到插件，依赖包时从网络上下载
+* <span class="string">'proxies'</span>为maven设置代理服务器
+</code></pre><p>###5. maven命令：<br>    maven主要的命令mvn，基本格式：’mvn <plugin-group-id>:<plugin-artifact-id>[:<plugin-version>:<goal>]’</goal></plugin-version></plugin-artifact-id></plugin-group-id></p>
+<pre><code>-<span class="ruby"> mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件
+</span>-<span class="ruby"> mvn test 单元测试
+</span>-<span class="ruby"> mvn package 项目打包
+</span>-<span class="ruby"> mvn install 安装到本地仓库
+</span>-<span class="ruby"> mvn deploy 部署到远程仓库
+</span>-<span class="ruby"> mvn site 生成站点</span>
+</code></pre><p>###6. maven的生命周期：<br>    指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段总是按顺序、依次执行。<br>    maven包括三个基本的生命周期：</p>
+<pre><code>-<span class="ruby"> <span class="symbol">clean:</span>构建项目之前进行清理工作
+</span>-<span class="ruby"> default：包括compile-test-package-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
+</span>-<span class="ruby"> <span class="symbol">site:</span>用于生成项目报告站点，发布站点。</span>
+</code></pre><p>###7. maven的坐标：为项目提供唯一标识</p>
+<pre><code>-<span class="ruby"> groupId：该项目的开发者域名
+</span>-<span class="ruby"> artifactId：指定项目名
+</span>-<span class="ruby"> <span class="symbol">packaging:</span> 指定项目打包的类型比如：jar，war
+</span>-<span class="ruby"> <span class="symbol">version:</span> 指定项目的版本</span>
+</code></pre><p>###8. pom文件的元素</p>
+<pre><code>-<span class="ruby"> &lt;properties.../&gt;<span class="symbol">:</span>定义全局属性
+</span>-<span class="ruby"> &lt;dependency.../&gt;<span class="symbol">:</span>定义依赖关系
+</span>-<span class="ruby"> &lt;scope.../&gt;<span class="symbol">:</span>指定依赖库起作用的范围，有compile,test,runtime,provided,system,import
+</span>    * compile:默认值，编译、测试、打包时使用
+    * test:测试时需要
+    * runtime:测试、运行、打包时使用，编译时不需要
+    * provided:在runtime时使用
+    * system:该jar由系统提供，在runtme时使用
+    * import:继承父POM中使用dependencymanagement配置的依赖
+-<span class="ruby"> &lt;exclusions.../&gt;<span class="symbol">:</span>排除此依赖关系中的某个依赖
+</span>-<span class="ruby"> &lt;type../&gt;<span class="symbol">:</span>指定依赖框架的类型，默认是jar
+</span>-<span class="ruby"> &lt;classifier../&gt;<span class="symbol">:</span>指定<span class="constant">JDK</span>的版本
+</span>-<span class="ruby"> &lt;dependencymanagement.../&gt;<span class="symbol">:</span>定义依赖管理
+</span>-<span class="ruby"> &lt;build.../&gt;<span class="symbol">:</span>定义构建关系
+</span>-<span class="ruby"> &lt;erganization.../&gt;<span class="symbol">:</span>指定项目所属的组织信息
+</span>-<span class="ruby"> &lt;developers.../&gt;<span class="symbol">:</span>配置项目开发者信息
+</span>-<span class="ruby"> &lt;contributors.../&gt;<span class="symbol">:</span>该项目的贡献者信息
+</span>-<span class="ruby"> &lt;issueManagement.../&gt;<span class="symbol">:</span>定义该项目的bug追踪系统
+</span>-<span class="ruby"> &lt;scm.../&gt;<span class="symbol">:</span>定义该项目源代码的管理工具
+</span>-<span class="ruby"> &lt;respositories.../&gt;<span class="symbol">:</span>定义远程仓库
+</span>-<span class="ruby"> &lt;distributionmanagement.../&gt;<span class="symbol">:</span>定义部署管理</span>
+</code></pre><p>###9. 使用maven创建、构建简单的项目</p>
+<pre><code><span class="number">1</span>. mvn archetype:generate -DinteractiveMode=false -DgroupId=com<span class="class">.zxy</span> -DartifactId=mavenTest -Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> 生成一个mavenTest的文件夹，就是相关文件
+<span class="number">2</span>. 在pom.xml所在文件夹运行mvn compile
+<span class="number">3</span>. 执行 mvn exec:java -Dexec.mainClass=<span class="string">"com.zxy.mavenTest.App"</span>(需要使用maven的exec插件)
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/12/05/maven/" data-title="Hexo" data-tsina="3917196687" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/12/05/maven-1/" title="maven���úͳ�������">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  maven���úͳ�������</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/11/03/hello-world/"  title="Hello World">
+ <strong>NEXT:</strong><br/> 
+ <span>Hello World
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标签：maven"><span class="toc-number">1.</span> <span class="toc-text">标签：maven</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m haitang Page in github! <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/3917196687" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>

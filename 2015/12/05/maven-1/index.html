@@ -1,0 +1,409 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>maven���úͳ������� | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="###1. maven��    ��Ŀ�����������á�Լ���������ã�COC�����Ĳ�����������Ŀ�����������ڰ�Դ���빹���ɿɷ�������Ŀ���������롢���������Ժͷַ��������������ɱ��棬����Webվ�㡣   ">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页|Home</a></li>
+					
+						<li><a href="/archives">所有文章|Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/05/maven-1/" title="maven���úͳ�������" itemprop="url">maven���úͳ�������</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-05T06:43:37.000Z" itemprop="datePublished">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T06:44:55.316Z" itemprop="dateModified">2015-12-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+		</div>
+		
+		<p>###1. maven��<br>    ��Ŀ�����������á�Լ���������ã�COC�����Ĳ�����������Ŀ�����������ڰ�Դ���빹���ɿɷ�������Ŀ���������롢���������Ժͷַ��������������ɱ��棬����Webվ�㡣<br>    maven����ҪԼ����</p>
+<pre><code>-<span class="ruby"> Դ����Ӧ��λ��<span class="string">'${basedir}/src/main/java'</span>
+</span>-<span class="ruby"> ��Դ�ļ�Ӧ��λ��<span class="string">'${basedir}/src/main/resources'</span>
+</span>-<span class="ruby"> ���Դ���Ӧ��λ��<span class="string">'${basedir}/src/test'</span>
+</span>-<span class="ruby"> �������ɵ�<span class="class"><span class="keyword">class</span>�ļ�Ӧ��λ��'${<span class="title">basedir</span>}/<span class="title">target</span>/<span class="title">classes</span>'</span></span>
+</code></pre><p>###2. mavenĿ¼:</p>
+<pre><code>- <span class="symbol">bin:</span>����maven�Ŀ�ִ������
+- boot��ֻ����һ��plexus-classwords-<span class="number">2.5</span>.<span class="number">1</span>.jar�������ؿ��ܣ���mavenʹ�ô˼��ؿ��ܼ����Լ���
+- conf�����������ļ���Ŀ¼������setting.xml������ȫ����Ϊ
+- <span class="class"><span class="keyword">lib</span>����������<span class="title">maven</span>����ʱ��Ҫ������</span>
+</code></pre><p>###3. ���û���������</p>
+<pre><code><span class="number">1</span>. ��װ<span class="constant">JDK</span>
+<span class="number">2</span>.  ���û���������
+   <span class="string">'path'</span>:jdk��װĿ¼��bin��·�����硱<span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\bin��
+   <span class="string">'classpath��'</span>jdk��װĿ¼�µ�<span class="class"><span class="keyword">lib</span>·�����硱.;</span><span class="constant">E</span>:\java\jdk\jdk1.<span class="number">7.0_40</span>\<span class="class"><span class="keyword">lib</span>����".;</span><span class="string">"��ʾ��ǰ·����
+   'JAVA_HOME'jdk��װ·�����磺��E:\java\jdk\jdk1.7.0_40��
+3. ���ԣ�����cmd������'java'����'javac'����'java -version'�ɹ����У�����װ�ɹ�
+4. ��װmaven
+5. ���û���������
+     'path'maven��װĿ¼��bin��·�����磺"</span><span class="constant">D</span>:\apache-maven-<span class="number">3.3</span>.<span class="number">3</span>\bin<span class="string">"
+     'M2_HOME'maven��װ·�����硱D:\apache-maven-3.3.3��
+6. ���ԣ�����cmd������'mvn help:system',����maven���ϴ����������ظ����ļ���Ȼ����ʾ'System Properties'��'Enviroment Variables',����װ�ɹ�</span>
+</code></pre><p>###4. ����maven���������ñ��زֿ�·����:</p>
+<pre><code>- ȫ�ַ�ʽ����maven��װĿ¼��config<span class="subst">\</span>setting<span class="built_in">.</span><span class="built_in">xml</span>�ļ���������
+- ��ǰ�û���ʽ��ͨ���û�Home�е�setting<span class="built_in">.</span><span class="built_in">xml</span>�ļ��������ã�Windows�û���C:<span class="subst">\</span>Users<span class="subst">\</span>administ<span class="subst">or</span>��
+* <span class="string">'localRepository'</span>����maven�ı��زֿ�·��
+* <span class="string">'interactiveMode'</span>����maven�Ƿ����ڽ���ģʽ����<span class="literal">false</span>��maven������ʾ�û����룬�������ܲ���Ĭ��ֵ��<span class="string">'true'</span>ÿ��maven��Ҫ�û�����ʱ�����������û�����
+* <span class="string">'offline'</span>����maven�Ƿ���������״̬��<span class="string">'false'</span>�Ҳ���������������ʱ������������
+* <span class="string">'proxies'</span>Ϊmaven���ô���������
+</code></pre><p>###5. maven���<br>    maven��Ҫ������mvn��������ʽ��’mvn <plugin-group-id>:<plugin-artifact-id>[:<plugin-version>:<goal>]’</goal></plugin-version></plugin-artifact-id></plugin-group-id></p>
+<pre><code>-<span class="ruby"> mvn compile ������Ŀ��Դ���룬��һ������compile���ῴ��maven���ϵش���������compile�����ĸ����ļ�
+</span>-<span class="ruby"> mvn test ��Ԫ����
+</span>-<span class="ruby"> mvn package ��Ŀ����
+</span>-<span class="ruby"> mvn install ��װ�����زֿ�
+</span>-<span class="ruby"> mvn deploy ������Զ�ֿ̲�
+</span>-<span class="ruby"> mvn site ����վ��</span>
+</code></pre><p>###6. maven���������ڣ�<br>    ָmaven������Ŀ�������������Ľ׶Σ�����Ϊphase��ÿ�����������ɶ����׶����ɣ�maven���������еĸ����׶����ǰ�˳��������ִ�С�<br>    maven���������������������ڣ�</p>
+<pre><code>-<span class="ruby"> <span class="symbol">clean:</span>������Ŀ֮ǰ������������
+</span>-<span class="ruby"> default������compile-test-package-install-deploy�ȣ���mvnִ��������ĳ���׶��ǻ���ִ�д˽׶�֮ǰ�Ľ׶Σ����磬ִ��<span class="string">'mvn install'</span>�����ȴ�clean��ʼִ�У�һֱִ�е�install
+</span>-<span class="ruby"> <span class="symbol">site:</span>����������Ŀ����վ�㣬����վ�㡣</span>
+</code></pre><p>###7. maven�����꣺Ϊ��Ŀ�ṩΨһ��ʶ</p>
+<pre><code>-<span class="ruby"> groupId������Ŀ�Ŀ���������
+</span>-<span class="ruby"> artifactId��ָ����Ŀ��
+</span>-<span class="ruby"> <span class="symbol">packaging:</span> ָ����Ŀ���������ͱ��磺jar��war
+</span>-<span class="ruby"> <span class="symbol">version:</span> ָ����Ŀ�İ汾</span>
+</code></pre><p>###8. pom�ļ���Ԫ��</p>
+<pre><code>-<span class="ruby"> &lt;properties.../&gt;<span class="symbol">:</span>����ȫ������
+</span>-<span class="ruby"> &lt;dependency.../&gt;<span class="symbol">:</span>����������ϵ
+</span>-<span class="ruby"> &lt;scope.../&gt;<span class="symbol">:</span>ָ�������������õķ�Χ����compile,test,runtime,provided,system,import
+</span>    * compile:Ĭ��ֵ�����롢���ԡ�����ʱʹ��
+    * test:����ʱ��Ҫ
+    * runtime:���ԡ����С�����ʱʹ�ã�����ʱ����Ҫ
+    * provided:��runtimeʱʹ��
+    * system:��jar��ϵͳ�ṩ����runtmeʱʹ��
+    * import:�̳и�POM��ʹ��dependencymanagement���õ�����
+-<span class="ruby"> &lt;exclusions.../&gt;<span class="symbol">:</span>�ų���������ϵ�е�ĳ������
+</span>-<span class="ruby"> &lt;type../&gt;<span class="symbol">:</span>ָ���������ܵ����ͣ�Ĭ����jar
+</span>-<span class="ruby"> &lt;classifier../&gt;<span class="symbol">:</span>ָ��<span class="constant">JDK</span>�İ汾
+</span>-<span class="ruby"> &lt;dependencymanagement.../&gt;<span class="symbol">:</span>������������
+</span>-<span class="ruby"> &lt;build.../&gt;<span class="symbol">:</span>���幹����ϵ
+</span>-<span class="ruby"> &lt;erganization.../&gt;<span class="symbol">:</span>ָ����Ŀ��������֯��Ϣ
+</span>-<span class="ruby"> &lt;developers.../&gt;<span class="symbol">:</span>������Ŀ��������Ϣ
+</span>-<span class="ruby"> &lt;contributors.../&gt;<span class="symbol">:</span>����Ŀ�Ĺ�������Ϣ
+</span>-<span class="ruby"> &lt;issueManagement.../&gt;<span class="symbol">:</span>��������Ŀ��bug׷��ϵͳ
+</span>-<span class="ruby"> &lt;scm.../&gt;<span class="symbol">:</span>��������ĿԴ�����Ĺ�������
+</span>-<span class="ruby"> &lt;respositories.../&gt;<span class="symbol">:</span>����Զ�ֿ̲�
+</span>-<span class="ruby"> &lt;distributionmanagement.../&gt;<span class="symbol">:</span>���岿������</span>
+</code></pre><p>###9. ʹ��maven�����������򵥵���Ŀ</p>
+<pre><code><span class="number">1</span>. mvn archetype:generate -DinteractiveMode=false -DgroupId=com<span class="class">.zxy</span> -DartifactId=mavenTest -Dpackage=com<span class="class">.zxy</span><span class="class">.mavenqs</span> ����һ��mavenTest���ļ��У����������ļ�
+<span class="number">2</span>. ��pom.xml�����ļ�������mvn compile
+<span class="number">3</span>. ִ�� mvn exec:java -Dexec.mainClass=<span class="string">"com.zxy.mavenTest.App"</span>(��Ҫʹ��maven��exec����)
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/maven/">maven</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/12/05/maven-1/" data-title="maven���úͳ������� | Hexo" data-tsina="3917196687" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/12/05/maven/"  title="">
+ <strong>NEXT:</strong><br/> 
+ <span>(no title)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m haitang Page in github! <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/3917196687" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
