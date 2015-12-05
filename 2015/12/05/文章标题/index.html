@@ -9,9 +9,10 @@
     
     <meta name="author" content="John Doe">
     
-    <meta name="description" content="Javac 编译原理javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
+    <meta name="description" content="1. Javac 编译原理javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
 源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
-![](http://img.blog.csdn.net/201511">
+
+[总述示意图](http://img.blog.csdn.ne">
     
     
     
@@ -75,7 +76,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T07:37:48.552Z" itemprop="dateModified">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T10:07:30.707Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -84,54 +85,50 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">Javac 编译原理</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">1. Javac 编译原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_词法分析：如，package_zxy-demo-example"><span class="toc-number">2.</span> <span class="toc-text">2. 词法分析：如，package zxy.demo.example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_语法分析"><span class="toc-number">3.</span> <span class="toc-text">3. 语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_语义分析"><span class="toc-number">4.</span> <span class="toc-text">4. 语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_代码生成器"><span class="toc-number">5.</span> <span class="toc-text">5. 代码生成器</span></a></li></ol>
 		</div>
 		
-		<h2 id="Javac_编译原理">Javac 编译原理</h2><pre><code>javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的<span class="keyword">class</span>字节码。也就是说将
+		<h3 id="1-_Javac_编译原理">1. Javac 编译原理</h3><pre><code>javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
 源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
-![](http:<span class="comment">//img.blog.csdn.net/20151104180918590)</span>
-![总述示意图](http:<span class="comment">//img.blog.csdn.net/20151104180918590)</span>
+
+[<span class="link_label">总述示意图</span>](<span class="link_url">http://img.blog.csdn.net/20151104180918590</span>)!
 
 Javac编译器工作原理：
 
-![工作原理示意图](http:<span class="comment">//img.blog.csdn.net/20151104184959544)</span>
+![<span class="link_label">工作原理示意图</span>](<span class="link_url">http://img.blog.csdn.net/20151104184959544</span>)
+</code></pre><h3 id="2-_词法分析：如，package_zxy-demo-example">2. 词法分析：如，package zxy.demo.example</h3><pre><code>Lexer的实现类Scanner和JavacParser,JavaParser规定哪些词符合Java语言规范；Scanner负责单个读取Java源代码，
+然后解析符合Java语言规范的<span class="keyword">Token</span>序列。如，'package zxy.demo.example';
+<span class="keyword">Token</span>.PACKAGE = package
+<span class="keyword">Token</span>.IDENTIFIER = zxy.demo.example,(这部分又分为读取第一个<span class="keyword">token</span>,为zxy，判断下一个<span class="keyword">token</span>是否为“.”，
+是的话接着读取下一个<span class="keyword">Token</span>.IDENTIFIER类型的<span class="keyword">token</span>，反复直至下一个<span class="keyword">token</span>不是<span class="string">"."</span>,也就说明下一个不是
+<span class="keyword">Token</span>.IDENIFIER类型的<span class="keyword">token</span>。)
+<span class="keyword">Token</span>.SEMI = ；
+至于以上是如何匹配的，KeyWords类负责此任务。
+每个字符集合都是一个Name对象，储存在Name.<span class="keyword">Table</span>的内部类当中。KeyWords将每个<span class="keyword">Token</span>.name转化为
+Name对象建立与<span class="keyword">Token</span>的对应关系，如果在<span class="keyword">token</span>对应的Name.<span class="keyword">Table</span>中找不到的话，那就是<span class="keyword">Token</span>.IDRNIFIER.
+如，原本Name.<span class="keyword">Table</span>中有很多关键字，比如package，读取第一个<span class="keyword">token</span>是package，在Name.<span class="keyword">table</span>中查找，找到，
+保存在KeyWords的key数组中；zxy.demo.example在Name.<span class="keyword">table</span>中找不到就为<span class="keyword">Token</span>.IDENIFIER。
+这句代码就分析完毕，形成<span class="keyword">Token</span>流。 
+</code></pre><h3 id="3-_语法分析">3. 语法分析</h3><pre><code>将上一步的每一个token组成一个语句。形成<span class="keyword">package</span>语法树。
+每个语法节点都会实现一个xxxTree,比如packageTree,都是JCTree的子类。
+JCTree的属性Tree <span class="string">tag:</span>每个语法节点都会以整数的形式表示，下一个节点在上一个节点上<span class="number">1</span>；
+<span class="keyword">package</span>...;
+<span class="keyword">import</span>..;
+如，<span class="keyword">package</span>为<span class="number">1</span>，<span class="keyword">import</span>就为<span class="number">2</span>。
+<span class="string">pos:</span>储存的是这个语法节点在源代码中的初始位置；
+<span class="string">type:</span>表示这个节点是什么Java类型。
+</code></pre><h3 id="4-_语义分析">4. 语义分析</h3><pre><code>符号出入到符号表：将属于此类的符号（包括类中出现的符号、继承的符号等）输入到类自身的符号表中；
+添加默认构造函数：如果类中没有构造函数，则自动添加默认构造函数，有构造函数则不会添加；
+标注：检查语义的合法性并进行逻辑判断，比如：类型是否匹配，使用前是否进行初始化，等；
+数据流分析:检查使用前是否正确赋值，<span class="keyword">final</span>修饰的变量不能被重复赋值，等；
+对语法树进行语义分析，如消除无用的代码、解除语法糖、如<span class="keyword">foreach</span>解析成<span class="keyword">for</span>循环，<span class="keyword">in</span>到Integer的自动装箱等。
+</code></pre><h3 id="5-_代码生成器">5. 代码生成器</h3><pre><code>将Java方法中的代码块转化成符合JVM语法的命令形式，因为JVM操作都是基于栈。所以讲表达式转化为字节码，
+比如int a=1; 
+float b=3.0;return (a+b);
+用javap专门用于分析字节码的工具，转化为JVM就是
 
-### 1. 词法分析：如，package zxy.demo.example
-    Lexer的实现类Scanner和JavacParser,JavaParser规定哪些词符合Java语言规范；Scanner负责单个读取Java源代码，
-    然后解析符合Java语言规范的<span class="keyword">Token</span>序列。如，'package zxy.demo.example';
-    <span class="keyword">Token</span>.PACKAGE = package
-    <span class="keyword">Token</span>.IDENTIFIER = zxy.demo.example,(这部分又分为读取第一个<span class="keyword">token</span>,为zxy，判断下一个<span class="keyword">token</span>是否为“.”，
-    是的话接着读取下一个<span class="keyword">Token</span>.IDENTIFIER类型的<span class="keyword">token</span>，反复直至下一个<span class="keyword">token</span>不是<span class="string">"."</span>,也就说明下一个不是
-    <span class="keyword">Token</span>.IDENIFIER类型的<span class="keyword">token</span>。)
-    <span class="keyword">Token</span>.SEMI = ；
-    至于以上是如何匹配的，KeyWords类负责此任务。
-    每个字符集合都是一个Name对象，储存在Name.<span class="keyword">Table</span>的内部类当中。KeyWords将每个<span class="keyword">Token</span>.name转化为
-    Name对象建立与<span class="keyword">Token</span>的对应关系，如果在<span class="keyword">token</span>对应的Name.<span class="keyword">Table</span>中找不到的话，那就是<span class="keyword">Token</span>.IDRNIFIER.
-    如，原本Name.<span class="keyword">Table</span>中有很多关键字，比如package，读取第一个<span class="keyword">token</span>是package，在Name.<span class="keyword">table</span>中查找，找到，
-    保存在KeyWords的key数组中；zxy.demo.example在Name.<span class="keyword">table</span>中找不到就为<span class="keyword">Token</span>.IDENIFIER。
-    这句代码就分析完毕，形成<span class="keyword">Token</span>流。 
-### 2. 语法分析
-    将上一步的每一个<span class="keyword">token</span>组成一个语句。形成package语法树。
-    每个语法节点都会实现一个xxxTree,比如packageTree,都是JCTree的子类。
-    JCTree的属性Tree tag:每个语法节点都会以整数的形式表示，下一个节点在上一个节点上1；
-    package...;
-    import..;
-    如，package为1，import就为2。
-    pos:储存的是这个语法节点在源代码中的初始位置；
-    <span class="keyword">type</span>:表示这个节点是什么Java类型。
-### 3. 语义分析
-    符号出入到符号表：将属于此类的符号（包括类中出现的符号、继承的符号等）输入到类自身的符号表中；
-    添加默认构造函数：如果类中没有构造函数，则自动添加默认构造函数，有构造函数则不会添加；
-    标注：检查语义的合法性并进行逻辑判断，比如：类型是否匹配，使用前是否进行初始化，等；
-    数据流分析:检查使用前是否正确赋值，final修饰的变量不能被重复赋值，等；
-    对语法树进行语义分析，如消除无用的代码、解除语法糖、如<span class="keyword">foreach</span>解析成<span class="keyword">for</span>循环，<span class="keyword">in</span>到Integer的自动装箱等。
-### 4. 代码生成器
-    将Java方法中的代码块转化成符合JVM语法的命令形式，因为JVM操作都是基于栈。所以讲表达式转化为字节码，
-    比如int a=1; 
-    float b=3.0;<span class="keyword">return</span> (a+b);
-    用javap专门用于分析字节码的工具，转化为JVM就是    
-</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:iconst_1</span><br><span class="line"><span class="number">1</span>:istore_1</span><br><span class="line"><span class="number">2</span>:fconst_3<span class="number">.0</span></span><br><span class="line"><span class="number">3</span>:fstore_2</span><br><span class="line"><span class="number">4</span>:iload_1</span><br><span class="line"><span class="number">5</span>:fload_2;</span><br><span class="line"><span class="number">4</span>:fadd</span><br><span class="line"><span class="number">5</span>:freturn</span><br></pre></td></tr></table></figure>
-  
+<span class="comment"><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:iconst_1</span><br><span class="line"><span class="number">1</span>:istore_1</span><br><span class="line"><span class="number">2</span>:fconst_3<span class="number">.0</span></span><br><span class="line"><span class="number">3</span>:fstore_2</span><br><span class="line"><span class="number">4</span>:iload_1</span><br><span class="line"><span class="number">5</span>:fload_2;</span><br><span class="line"><span class="number">4</span>:fadd</span><br><span class="line"><span class="number">5</span>:freturn</span><br></pre></td></tr></table></figure></span>
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -183,7 +180,7 @@ Javac编译器工作原理：
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">Javac 编译原理</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">1. Javac 编译原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_词法分析：如，package_zxy-demo-example"><span class="toc-number">2.</span> <span class="toc-text">2. 词法分析：如，package zxy.demo.example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_语法分析"><span class="toc-number">3.</span> <span class="toc-text">3. 语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_语义分析"><span class="toc-number">4.</span> <span class="toc-text">4. 语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_代码生成器"><span class="toc-number">5.</span> <span class="toc-text">5. 代码生成器</span></a></li></ol>
   </div>
 
 <div id="asidepart">

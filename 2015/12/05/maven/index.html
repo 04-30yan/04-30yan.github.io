@@ -13,8 +13,8 @@
 测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
 
-- 源代码应该位于&#39;${basedir}/src/main/java&#39;
-- 资源文件应该位于">
+    - 源代码应该位于&#39;${basedir}/src/main/java&#39;
+    - ">
     
     
     
@@ -78,7 +78,7 @@ maven的主要约定：
     </p>
   <p class="article-time">
     <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T07:09:38.264Z" itemprop="dateModified">2015-12-05</time>
+    更新日期:<time datetime="2015-12-05T10:08:29.692Z" itemprop="dateModified">2015-12-05</time>
     
   </p>
 </header>
@@ -94,10 +94,10 @@ maven的主要约定：
 测试和分发），还可以生成报告，生成Web站点。
 maven的主要约定：
 
--<span class="ruby"> 源代码应该位于<span class="string">'${basedir}/src/main/java'</span>
-</span>-<span class="ruby"> 资源文件应该位于<span class="string">'${basedir}/src/main/resources'</span>
-</span>-<span class="ruby"> 测试代码应该位于<span class="string">'${basedir}/src/test'</span>
-</span>-<span class="ruby"> 编译生成的<span class="class"><span class="keyword">class</span>文件应该位于'${<span class="title">basedir</span>}/<span class="title">target</span>/<span class="title">classes</span>'</span></span>
+    -<span class="ruby"> 源代码应该位于<span class="string">'${basedir}/src/main/java'</span>
+</span>    -<span class="ruby"> 资源文件应该位于<span class="string">'${basedir}/src/main/resources'</span>
+</span>    -<span class="ruby"> 测试代码应该位于<span class="string">'${basedir}/src/test'</span>
+</span>    -<span class="ruby"> 编译生成的<span class="class"><span class="keyword">class</span>文件应该位于'${<span class="title">basedir</span>}/<span class="title">target</span>/<span class="title">classes</span>'</span></span>
 </code></pre><h3 id="2-_maven目录:">2. maven目录:</h3><pre><code>- <span class="symbol">bin:</span>保存maven的可执行命令
 - boot：只包含一个plexus-classwords-<span class="number">2.5</span>.<span class="number">1</span>.jar（类加载框架），maven使用此加载框架加载自己。
 - conf：保存配置文件的目录，包括setting.xml，配置全局行为
@@ -124,20 +124,20 @@ maven的主要约定：
     * <span class="string">'proxies'</span>为maven设置代理服务器
 </code></pre><h3 id="5-_maven命令：">5. maven命令：</h3><pre><code>maven主要的命令mvn，基本格式：'mvn &lt;plugin-group-id&gt;:&lt;plugin-artifact-id&gt;[:&lt;plugin-version&gt;:&lt;goal&gt;]'
 
--<span class="ruby"> mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件
-</span>-<span class="ruby"> mvn test 单元测试
-</span>-<span class="ruby"> mvn package 项目打包
-</span>-<span class="ruby"> mvn install 安装到本地仓库
-</span>-<span class="ruby"> mvn deploy 部署到远程仓库
-</span>-<span class="ruby"> mvn site 生成站点</span>
+    -<span class="ruby"> mvn compile 编译项目的源代码，第一次运行compile，会看到maven不断地从网络下载compile插件的各种文件
+</span>    -<span class="ruby"> mvn test 单元测试
+</span>    -<span class="ruby"> mvn package 项目打包
+</span>    -<span class="ruby"> mvn install 安装到本地仓库
+</span>    -<span class="ruby"> mvn deploy 部署到远程仓库
+</span>    -<span class="ruby"> mvn site 生成站点</span>
 </code></pre><h3 id="6-_maven的生命周期：">6. maven的生命周期：</h3><pre><code>指maven构建项目包括多个有序的阶段，被称为phase，每个生命周期由多个阶段组成，maven生命周期中的各个阶段
 总是按顺序、依次执行。
 maven包括三个基本的生命周期：
 
-- <span class="string">clean:</span>构建项目之前进行清理工作
-- <span class="keyword">default</span>：包括compile-test-<span class="keyword">package</span>-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，
-  比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
-- <span class="string">site:</span>用于生成项目报告站点，发布站点。
+    - <span class="string">clean:</span>构建项目之前进行清理工作
+    - <span class="keyword">default</span>：包括compile-test-<span class="keyword">package</span>-install-deploy等，当mvn执行上面的某个阶段是会先执行此阶段之前的阶段，
+      比如，执行<span class="string">'mvn install'</span>，会先从clean开始执行，一直执行到install
+    - <span class="string">site:</span>用于生成项目报告站点，发布站点。
 </code></pre><h3 id="7-_maven的坐标：为项目提供唯一标识">7. maven的坐标：为项目提供唯一标识</h3><pre><code>-<span class="ruby"> groupId：该项目的开发者域名
 </span>-<span class="ruby"> artifactId：指定项目名
 </span>-<span class="ruby"> <span class="symbol">packaging:</span> 指定项目打包的类型比如：jar，war
