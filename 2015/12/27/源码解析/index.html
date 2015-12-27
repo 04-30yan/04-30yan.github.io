@@ -1,0 +1,330 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>string和StringBuilder解析 | haitang</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="zxy">
+    
+    <meta name="description" content="1.String之我见
+Java字符串就是Unicode字符序列
+String在java中不是基本类型，是一个类，其实现是通过final char value[],所以查询、替换和数组一样；
+public final class String 说明String 是不可变的，如果是进行赋值或其他操作都">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="haitang" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="haitang" title="haitang"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="haitang">haitang</a></h1>
+				<h2 class="blog-motto">be myself</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">主页|Home</a></li>
+					
+						<li><a href="/archives">所有文章|Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:github.com/04-30yan">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="string" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/27/源码解析/" title="string和StringBuilder解析" itemprop="url">string和StringBuilder解析</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="https://github.com/04-30yan" title="zxy">zxy</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-27T06:39:52.000Z" itemprop="datePublished">2015-12-27</time>
+    更新日期:<time datetime="2015-12-27T08:23:22.961Z" itemprop="dateModified">2015-12-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-String之我见"><span class="toc-number">1.</span> <span class="toc-text">1.String之我见</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-StringBuilder"><span class="toc-number">2.</span> <span class="toc-text">2.StringBuilder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-delete:把要被删除元素的后边的元素往前挪了END_-_START个位置。然后按长度取，insert类似，现将后移，在插入"><span class="toc-number">3.</span> <span class="toc-text">3.delete:把要被删除元素的后边的元素往前挪了END - START个位置。然后按长度取，insert类似，现将后移，在插入</span></a></li></ol>
+		</div>
+		
+		<h3 id="1-String之我见">1.String之我见</h3><ul>
+<li>Java字符串就是Unicode字符序列</li>
+<li>String在java中不是基本类型，是一个类，其实现是通过final char value[],所以查询、替换和数组一样；</li>
+<li><p>public final class String 说明String 是不可变的，如果是进行赋值或其他操作都是生成一个新的对象，<br>就像有个字符串池，字符常量存放在常量池中，字符串变量指向字符串池中的相对应的位置。<br>实际上，池中的字符串常量是可以共享的。<br>字符串变量相当于对象变量，是不可以共享的<br>这样设计是因为字符串很少修改，但是很多时候需要共享，防止出现很多人使用同一字符串时，<br>有一人修改字符串，而导致的错误</p>
+<ul>
+<li>“==”和equals<br>“==”比较的是s1和s2的内存地址，是一样则返回true<br> equals比较的是他们的字面量，如果两个字符串是一样的则返回true<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String </span><span class="literal">s1</span> = new <span class="keyword">String("ok");//new(),返回的是字符串“ok”在内存中的地址，这里的s1是对象变量保存的是内存地址，是不可以共享的</span><br><span class="line"></span><span class="keyword">String </span><span class="literal">s12</span> = new <span class="keyword">String("ok");</span><br><span class="line"></span>//<span class="literal">s1</span> = <span class="literal">s12</span>,则<span class="literal">s1</span> == <span class="literal">s12</span>,</span><br><span class="line"><span class="label">System.out.println</span>(<span class="literal">s1</span> == <span class="literal">s12</span>)<span class="comment">;//false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">String </span><span class="literal">s2</span> = <span class="string">"ok"</span><span class="comment">;//s2是字符串常量可以共享</span></span><br><span class="line"><span class="keyword">String </span><span class="literal">s22</span> = <span class="string">"ok"</span><span class="comment">;</span></span><br><span class="line"><span class="label">System.out.println</span>(<span class="literal">s2</span> == <span class="literal">s22</span>)<span class="comment">;//true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>hashCode()<br>  一般情况下，是保存对象的内存地址，但是String中重写了hashCode方法,根据的是字符串的内容生成的，所以如果两个<br>  字符串的内容相同，其hashCode一定相同</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h = hash;</span><br><span class="line">        <span class="keyword">if</span> (h == <span class="number">0</span> &amp;&amp; value.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">char</span> val[] = value;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; value.length; i++) &#123;</span><br><span class="line">                h = <span class="number">31</span> * h + val[i];</span><br><span class="line">            &#125;</span><br><span class="line">            hash = h;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> h;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>replace:char[] val = value,新的字符数组进行操作，先找到，在替换，之后返回替换后的数组buf[i]</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replace</span><span class="params">(<span class="keyword">char</span> oldChar, <span class="keyword">char</span> newChar)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (oldChar != newChar) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = value.length;</span><br><span class="line">        <span class="keyword">int</span> i = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">char</span>[] val = value; <span class="comment">/* avoid getfield opcode */</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (++i &lt; len) &#123;</span><br><span class="line">            <span class="keyword">if</span> (val[i] == oldChar) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; len) &#123;</span><br><span class="line">            <span class="keyword">char</span> buf[] = <span class="keyword">new</span> <span class="keyword">char</span>[len];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">                buf[j] = val[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; len) &#123;</span><br><span class="line">                <span class="keyword">char</span> c = val[i];</span><br><span class="line">                buf[i] = (c == oldChar) ? newChar : c;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-StringBuilder">2.StringBuilder</h3><ul>
+<li>StringBuilder是从StringBuffer那里演进过来的，StringBuffer允许采用多线程的方式执行添加和删除字符的操作，但是这种情况比较少，<br>StringBuilder单线程，</li>
+<li>StringBuilder，其内部采用动态数组的形式实现，操作的是数组本身</li>
+<li>实现：<br>  public AbstractStringBuilder append(String str) {<pre><code><span class="keyword">if</span> (<span class="keyword">str</span> == <span class="keyword">null</span>) <span class="keyword">str</span> = <span class="string">"null"</span>;
+<span class="keyword">int</span> len = <span class="keyword">str</span>.length();
+ensureCapacityInternal(<span class="keyword">count</span> + len);
+<span class="keyword">str</span>.getChars(<span class="number">0</span>, len, value, <span class="keyword">count</span>);
+<span class="keyword">count</span> += len;
+<span class="keyword">return</span> <span class="keyword">this</span>;
+</code></pre>  }<h3 id="3-delete:把要被删除元素的后边的元素往前挪了END_-_START个位置。然后按长度取，insert类似，现将后移，在插入">3.delete:把要被删除元素的后边的元素往前挪了END - START个位置。然后按长度取，insert类似，现将后移，在插入</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> AbstractStringBuilder delete(<span class="built_in">int</span> start, <span class="built_in">int</span> <span class="keyword">end</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (start &lt; <span class="number">0</span>)</span><br><span class="line">        throw new StringIndexOutOfBoundsException(start);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">end</span> &gt; <span class="built_in">count</span>)</span><br><span class="line">        <span class="keyword">end</span> = <span class="built_in">count</span>;</span><br><span class="line">    <span class="keyword">if</span> (start &gt; <span class="keyword">end</span>)</span><br><span class="line">        throw new StringIndexOutOfBoundsException();</span><br><span class="line">    <span class="built_in">int</span> len = <span class="keyword">end</span> - start;</span><br><span class="line">    <span class="keyword">if</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        System.arraycopy(<span class="keyword">value</span>, start+len, <span class="keyword">value</span>, start, <span class="built_in">count</span>-<span class="keyword">end</span>);</span><br><span class="line">        <span class="built_in">count</span> -= len;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java基础/">java基础</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="https://github.com/04-30yan/2015/12/27/源码解析/" data-title="string和StringBuilder解析 | haitang" data-tsina="3917196687" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/12/27/hello-world/" title="Hello World">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Hello World</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/12/08/优秀博客/"  title="优秀博客">
+ <strong>NEXT:</strong><br/> 
+ <span>优秀博客
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/JDK插件/" title="JDK插件">JDK插件<sup>1</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/java基础/" title="java基础">java基础<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/学习成长/" title="学习成长">学习成长<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li> <a href="http://04-30yan.github.io/" target="_blank" title="zxy">yan04-30's Blog</a></li>
+      <li><a href="http://blog.csdn.net/yan04_30" target="_blank" title="zxy">CSDN博客</a></li>
+      <li><a href="http://blog.jobbole.com" target="_blank" title="YangJian">伯乐在线</a></li>    
+    </ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m haitang Page in github! <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/3917196687" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="https://github.com/04-30yan" target="_blank" title="zxy">zxy</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+
+
+
+
+
+  </body>
+ </html>
