@@ -12,7 +12,7 @@
     <meta name="description" content="1.String之我见
 Java字符串就是Unicode字符序列
 String在java中不是基本类型，是一个类，其实现是通过final char value[],所以查询、替换和数组一样；
-public final class String 说明String 是不可变的，如果是进行赋值或其他操作都">
+public final class String 说明String 是不可变的，类中每个看起来会修改值的方">
     
     
     
@@ -78,7 +78,7 @@ public final class String 说明String 是不可变的，如果是进行赋值�
     </p>
   <p class="article-time">
     <time datetime="2015-12-27T06:39:52.000Z" itemprop="datePublished">2015-12-27</time>
-    更新日期:<time datetime="2015-12-27T08:42:58.311Z" itemprop="dateModified">2015-12-27</time>
+    更新日期:<time datetime="2015-12-27T12:21:19.761Z" itemprop="dateModified">2015-12-27</time>
     
   </p>
 </header>
@@ -93,7 +93,7 @@ public final class String 说明String 是不可变的，如果是进行赋值�
 		<h3 id="1-String之我见">1.String之我见</h3><ul>
 <li>Java字符串就是Unicode字符序列</li>
 <li>String在java中不是基本类型，是一个类，其实现是通过final char value[],所以查询、替换和数组一样；</li>
-<li>public final class String 说明String 是不可变的，如果是进行赋值或其他操作都是生成一个新的对象，<br>就像有个字符串池，字符常量存放在常量池中，字符串变量指向字符串池中的相对应的位置。<br>实际上，池中的字符串常量是可以共享的。<br>字符串变量相当于对象变量，是不可以共享的<br>这样设计是因为字符串很少修改，但是很多时候需要共享，防止出现很多人使用同一字符串时，<br>有一人修改字符串，而导致的错误</li>
+<li>public final class String 说明String 是不可变的，类中每个看起来会修改值的方法都是创建了一个新的对象<br>就像有个字符串池，字符常量存放在常量池中，字符串变量指向字符串池中的相对应的位置。<br>实际上，池中的字符串常量是可以共享的。<br>字符串变量相当于对象变量，是不可以共享的<br>这样设计是因为字符串很少修改，但是很多时候需要共享，防止出现很多人使用同一字符串时，<br>有一人修改字符串，而导致的错误</li>
 <li><p>“==”和equals<br> “==”比较的是s1和s2的内存地址，是一样则返回true<br> equals比较的是他们的字面量，如果两个字符串是一样的则返回true</p>
 <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String </span><span class="literal">s1</span> = new <span class="keyword">String("ok");//new(),返回的是字符串“ok”在内存中的地址，这里的s1是对象变量保存的是内存地址，</span><br><span class="line"></span>                            //是不可以共享的</span><br><span class="line"><span class="keyword">String </span><span class="literal">s12</span> = new <span class="keyword">String("ok");</span><br><span class="line"></span>//<span class="literal">s1</span> = <span class="literal">s12</span>,则<span class="literal">s1</span> == <span class="literal">s12</span>,</span><br><span class="line"><span class="label">System.out.println</span>(<span class="literal">s1</span> == <span class="literal">s12</span>)<span class="comment">;//false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">String </span><span class="literal">s2</span> = <span class="string">"ok"</span><span class="comment">;//s2是字符串常量可以共享</span></span><br><span class="line"><span class="keyword">String </span><span class="literal">s22</span> = <span class="string">"ok"</span><span class="comment">;</span></span><br><span class="line"><span class="label">System.out.println</span>(<span class="literal">s2</span> == <span class="literal">s22</span>)<span class="comment">;//true</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -194,6 +194,8 @@ ensureCapacityInternal(<span class="keyword">count</span> + len);
 			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 		
 			<li><a href="/tags/学习成长/" title="学习成长">学习成长<sup>1</sup></a></li>
+		
+			<li><a href="/tags/容器/" title="容器">容器<sup>1</sup></a></li>
 		
 		</ul>
 </div>
