@@ -76,7 +76,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-02-26T05:44:38.000Z" itemprop="datePublished">2016-02-26</time>
-    更新日期:<time datetime="2016-02-26T06:14:21.621Z" itemprop="dateModified">2016-02-26</time>
+    更新日期:<time datetime="2016-02-26T06:25:44.336Z" itemprop="dateModified">2016-02-26</time>
     
   </p>
 </header>
@@ -85,7 +85,7 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-volatile_读写内存语义及其实现"><span class="toc-number">6.</span> <span class="toc-text">6.volatile 读写内存语义及其实现</span></a></li></ol>
 		</div>
 		
 		<h3 id="1-概述：">1.概述：</h3><pre><code><span class="keyword">volatile</span>相当于是<span class="keyword">synchronized</span>的弱实现，一种稍弱的同步机制，只实现了可见性，没有实现原子性。用来确保将变量的更新操作通知到其他线程。
@@ -95,7 +95,8 @@
 </code></pre><p> 任务会先执行，执行多久。</p>
 <h3 id="4-使用原则：">4.使用原则：</h3><p> （1）.对变量的写入不依赖于变量的当前值（不会先检查再更新），或者保证只有有一个线程更新变量的值<br> （2）.该变量不会和其他变量一起纳入不变性条件（在创建后其状态不可改变）<br> （3）.在访问该变量时不用加锁</p>
 <h3 id="5-一般用法：">5.一般用法：</h3><pre><code>一般用作某个操作完成或发生中断，等状态信息
-</code></pre>  
+</code></pre><h3 id="6-volatile_读写内存语义及其实现">6.volatile 读写内存语义及其实现</h3><p>  ![](![简单的容器分类图](<a href="https://segmentfault.com/a/1190000000453976）" target="_blank" rel="external">https://segmentfault.com/a/1190000000453976）</a></p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -139,7 +140,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-volatile_读写内存语义及其实现"><span class="toc-number">6.</span> <span class="toc-text">6.volatile 读写内存语义及其实现</span></a></li></ol>
   </div>
 
 <div id="asidepart">
