@@ -9,8 +9,8 @@
     
     <meta name="author" content="zxy">
     
-    <meta name="description" content="#1.概述：    volatile相当于是synchronized的弱实现，一种稍弱的同步机制，只实现了可见性，没有实现原子性。用来确保将变量的更新操作通知到其他线程。
- #2.原理：    被声明了volatile的变量上的相关操作（比如get和set）不会参与指令重排序。直接在主存中，对其他变">
+    <meta name="description" content="1.概述：volatile相当于是synchronized的弱实现，一种稍弱的同步机制，只实现了可见性，没有实现原子性。用来确保将变量的更新操作通知到其他线程。
+2.原理：被声明了volatile的变量上的相关操作（比如get和set）不会参与指令重排序。直接在主存中，对其他变量可见，因此读取其变量">
     
     
     
@@ -76,7 +76,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-02-26T05:44:38.000Z" itemprop="datePublished">2016-02-26</time>
-    更新日期:<time datetime="2016-02-26T06:11:55.560Z" itemprop="dateModified">2016-02-26</time>
+    更新日期:<time datetime="2016-02-26T06:14:21.621Z" itemprop="dateModified">2016-02-26</time>
     
   </p>
 </header>
@@ -85,18 +85,17 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一般用作某个操作完成或发生中断，等状态信息"><span class="toc-number">1.</span> <span class="toc-text"> 一般用作某个操作完成或发生中断，等状态信息</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li></ol>
 		</div>
 		
-		<p> #1.概述：<br>    volatile相当于是synchronized的弱实现，一种稍弱的同步机制，只实现了可见性，没有实现原子性。用来确保将变量的更新操作通知到其他线程。</p>
-<p> #2.原理：<br>    被声明了volatile的变量上的相关操作（比如get和set）不会参与指令重排序。直接在主存中，对其他变量可见，因此读取其变量的值时会返回<br> 最新的值。</p>
-<p> #3.重排序：<br>    只要程序的最终结果等于它在严格的顺序化环境下的结果，那么指令的执行顺序就可能与代码的顺序不一致。多线程的环境下，谁也想不到那个<br> 任务会先执行，执行多久。</p>
-<p> #4.使用原则：</p>
-<p> ##（1）.对变量的写入不依赖于变量的当前值（不会先检查再更新），或者保证只有有一个线程更新变量的值</p>
-<p> ##（2）.该变量不会和其他变量一起纳入不变性条件（在创建后其状态不可改变）</p>
-<p> ##（3）.在访问该变量时不用加锁</p>
-<p> #5.一般用法：</p>
-<h2 id="一般用作某个操作完成或发生中断，等状态信息"> 一般用作某个操作完成或发生中断，等状态信息</h2>  
+		<h3 id="1-概述：">1.概述：</h3><pre><code><span class="keyword">volatile</span>相当于是<span class="keyword">synchronized</span>的弱实现，一种稍弱的同步机制，只实现了可见性，没有实现原子性。用来确保将变量的更新操作通知到其他线程。
+</code></pre><h3 id="2-原理：">2.原理：</h3><pre><code>被声明了<span class="keyword">volatile</span>的变量上的相关操作（比如<span class="keyword">get</span>和<span class="keyword">set</span>）不会参与指令重排序。直接在主存中，对其他变量可见，因此读取其变量的值时会返回
+</code></pre><p> 最新的值。</p>
+<h3 id="3-重排序：">3.重排序：</h3><pre><code>只要程序的最终结果等于它在严格的顺序化环境下的结果，那么指令的执行顺序就可能与代码的顺序不一致。多线程的环境下，谁也想不到那个
+</code></pre><p> 任务会先执行，执行多久。</p>
+<h3 id="4-使用原则：">4.使用原则：</h3><p> （1）.对变量的写入不依赖于变量的当前值（不会先检查再更新），或者保证只有有一个线程更新变量的值<br> （2）.该变量不会和其他变量一起纳入不变性条件（在创建后其状态不可改变）<br> （3）.在访问该变量时不用加锁</p>
+<h3 id="5-一般用法：">5.一般用法：</h3><pre><code>一般用作某个操作完成或发生中断，等状态信息
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -140,7 +139,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一般用作某个操作完成或发生中断，等状态信息"><span class="toc-number">1.</span> <span class="toc-text"> 一般用作某个操作完成或发生中断，等状态信息</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概述："><span class="toc-number">1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理："><span class="toc-number">2.</span> <span class="toc-text">2.原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重排序："><span class="toc-number">3.</span> <span class="toc-text">3.重排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用原则："><span class="toc-number">4.</span> <span class="toc-text">4.使用原则：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一般用法："><span class="toc-number">5.</span> <span class="toc-text">5.一般用法：</span></a></li></ol>
   </div>
 
 <div id="asidepart">
