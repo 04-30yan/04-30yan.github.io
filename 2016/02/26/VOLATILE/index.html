@@ -4,17 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>JVM(Java Virtual Machine)原理 篇一 Java编译原理 | haitang</title>
+    <title>volatile���� | haitang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="zxy">
     
-    <meta name="description" content="1. Javac 编译原理javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
-源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
- 
-Javac编译器工作原理：
- 
-2. 词法分析：如，pack">
+    <meta name="description" content="#1.������    volatile�൱����synchronized����ʵ�֣�һ��������ͬ�����ƣ�ֻʵ���˿ɼ��ԣ�û��ʵ��ԭ���ԡ�����ȷ���������ĸ��²���֪ͨ�������̡߳�
+ #2.ԭ����    ��������volatile">
     
     
     
@@ -72,15 +68,15 @@ Javac编译器工作原理：
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/05/文章标题/" title="JVM(Java Virtual Machine)原理 篇一 Java编译原理" itemprop="url">JVM(Java Virtual Machine)原理 篇一 Java编译原理</a>
+      <a href="/2016/02/26/VOLATILE/" title="volatile����" itemprop="url">volatile����</a>
   </h1>
   <p class="article-author">By
     
       <a href="https://github.com/04-30yan" title="zxy">zxy</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-27T07:07:42.200Z" itemprop="dateModified">2015-12-27</time>
+    <time datetime="2016-02-26T05:44:38.000Z" itemprop="datePublished">2016-02-26</time>
+    更新日期:<time datetime="2016-02-26T06:08:30.982Z" itemprop="dateModified">2016-02-26</time>
     
   </p>
 </header>
@@ -89,52 +85,24 @@ Javac编译器工作原理：
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">1. Javac 编译原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_词法分析：如，package_zxy-demo-example"><span class="toc-number">2.</span> <span class="toc-text">2. 词法分析：如，package zxy.demo.example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_语法分析"><span class="toc-number">3.</span> <span class="toc-text">3. 语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_语义分析"><span class="toc-number">4.</span> <span class="toc-text">4. 语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_代码生成器"><span class="toc-number">5.</span> <span class="toc-text">5. 代码生成器</span></a></li></ol>
+		
 		</div>
 		
-		<h3 id="1-_Javac_编译原理">1. Javac 编译原理</h3><pre><code>javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的<span class="class"><span class="keyword">class</span>字节码。也就是说将</span>
-源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
-</code></pre><p> <img src="http://img.blog.csdn.net/20151104180918590" alt="总述示意图"></p>
-<pre><code>Javac编译器工作原理：
-</code></pre><p> <img src="http://img.blog.csdn.net/20151104184959544" alt="工作原理示意图"></p>
-<h3 id="2-_词法分析：如，package_zxy-demo-example">2. 词法分析：如，package zxy.demo.example</h3><pre><code>Lexer的实现类Scanner和JavacParser,JavaParser规定哪些词符合Java语言规范；Scanner负责单个读取Java源代码，
-然后解析符合Java语言规范的<span class="keyword">Token</span>序列。如，'package zxy.demo.example';
-<span class="keyword">Token</span>.PACKAGE = package
-<span class="keyword">Token</span>.IDENTIFIER = zxy.demo.example,(这部分又分为读取第一个<span class="keyword">token</span>,为zxy，判断下一个<span class="keyword">token</span>是否为“.”，
-是的话接着读取下一个<span class="keyword">Token</span>.IDENTIFIER类型的<span class="keyword">token</span>，反复直至下一个<span class="keyword">token</span>不是<span class="string">"."</span>,也就说明下一个不是
-<span class="keyword">Token</span>.IDENIFIER类型的<span class="keyword">token</span>。)
-<span class="keyword">Token</span>.SEMI = ；
-至于以上是如何匹配的，KeyWords类负责此任务。
-每个字符集合都是一个Name对象，储存在Name.<span class="keyword">Table</span>的内部类当中。KeyWords将每个<span class="keyword">Token</span>.name转化为
-Name对象建立与<span class="keyword">Token</span>的对应关系，如果在<span class="keyword">token</span>对应的Name.<span class="keyword">Table</span>中找不到的话，那就是<span class="keyword">Token</span>.IDRNIFIER.
-如，原本Name.<span class="keyword">Table</span>中有很多关键字，比如package，读取第一个<span class="keyword">token</span>是package，在Name.<span class="keyword">table</span>中查找，找到，
-保存在KeyWords的key数组中；zxy.demo.example在Name.<span class="keyword">table</span>中找不到就为<span class="keyword">Token</span>.IDENIFIER。
-这句代码就分析完毕，形成<span class="keyword">Token</span>流。 
-</code></pre><h3 id="3-_语法分析">3. 语法分析</h3><pre><code>将上一步的每一个token组成一个语句。形成<span class="keyword">package</span>语法树。
-每个语法节点都会实现一个xxxTree,比如packageTree,都是JCTree的子类。
-JCTree的属性Tree <span class="string">tag:</span>每个语法节点都会以整数的形式表示，下一个节点在上一个节点上<span class="number">1</span>；
-<span class="keyword">package</span>...;
-<span class="keyword">import</span>..;
-如，<span class="keyword">package</span>为<span class="number">1</span>，<span class="keyword">import</span>就为<span class="number">2</span>。
-<span class="string">pos:</span>储存的是这个语法节点在源代码中的初始位置；
-<span class="string">type:</span>表示这个节点是什么Java类型。
-</code></pre><h3 id="4-_语义分析">4. 语义分析</h3><pre><code>符号出入到符号表：将属于此类的符号（包括类中出现的符号、继承的符号等）输入到类自身的符号表中；
-添加默认构造函数：如果类中没有构造函数，则自动添加默认构造函数，有构造函数则不会添加；
-标注：检查语义的合法性并进行逻辑判断，比如：类型是否匹配，使用前是否进行初始化，等；
-数据流分析:检查使用前是否正确赋值，<span class="keyword">final</span>修饰的变量不能被重复赋值，等；
-对语法树进行语义分析，如消除无用的代码、解除语法糖、如<span class="keyword">foreach</span>解析成<span class="keyword">for</span>循环，<span class="keyword">in</span>到Integer的自动装箱等。    
-</code></pre><h3 id="5-_代码生成器">5. 代码生成器</h3><pre><code>将Java方法中的代码块转化成符合JVM语法的命令形式，因为JVM操作都是基于栈。所以讲表达式转化为字节码，
-比如<span class="keyword">int</span> a=<span class="number">1</span>; 
-<span class="keyword">float</span> b=<span class="number">3.0</span>;<span class="keyword">return</span> (a+b);
-用javap专门用于分析字节码的工具，转化为JVM就是
-</code></pre> <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:iconst_1</span><br><span class="line"><span class="number">1</span>:istore_1</span><br><span class="line"><span class="number">2</span>:fconst_3<span class="number">.0</span></span><br><span class="line"><span class="number">3</span>:fstore_2</span><br><span class="line"><span class="number">4</span>:iload_1</span><br><span class="line"><span class="number">5</span>:fload_2;</span><br><span class="line"><span class="number">4</span>:fadd</span><br><span class="line"><span class="number">5</span>:freturn</span><br></pre></td></tr></table></figure>
+		<p> #1.������<br>    volatile�൱����synchronized����ʵ�֣�һ��������ͬ�����ƣ�ֻʵ���˿ɼ��ԣ�û��ʵ��ԭ���ԡ�����ȷ���������ĸ��²���֪ͨ�������̡߳�</p>
+<p> #2.ԭ����<br>    ��������volatile�ı����ϵ����ز���������get��set����������ָ����������ֱ���������У������������ɼ������˶�ȡ��������ֵʱ�᷵��<br> ���µ�ֵ��</p>
+<p> #3.��������<br>    ֻҪ���������ս������������ϸ���˳�򻯻����µĽ�������ôָ����ִ��˳���Ϳ�����������˳����һ�¡����̵߳Ļ����£�˭Ҳ�벻���Ǹ�<br> ��������ִ�У�ִ�ж��á�</p>
+<p> #4.ʹ��ԭ����</p>
+<p> ##��1��.�Ա�����д�벻�����ڱ����ĵ�ǰֵ�������ȼ����ٸ��£������߱�ֻ֤����һ���̸߳��±�����ֵ</p>
+<p> ##��2��.�ñ�����������������һ�����벻�����������ڴ�������״̬���ɸı䣩</p>
+<p> ##��3��.�ڷ��ʸñ���ʱ���ü���</p>
+<p> #5.һ���÷���<br> һ������ĳ���������ɻ������жϣ���״̬��Ϣ</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JVM/">JVM</a>
+  <span></span> <a href="/tags/����/">����</a>
   </div>
 
 
@@ -142,7 +110,7 @@ JCTree的属性Tree <span class="string">tag:</span>每个语法节点都会以�
 
 <div class="article-share" id="share">
 
-  <div data-url="https://github.com/04-30yan/2015/12/05/文章标题/" data-title="JVM(Java Virtual Machine)原理 篇一 Java编译原理 | haitang" data-tsina="3917196687" class="share clearfix">
+  <div data-url="https://github.com/04-30yan/2016/02/26/VOLATILE/" data-title="volatile���� | haitang" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -151,19 +119,11 @@ JCTree的属性Tree <span class="string">tag:</span>每个语法节点都会以�
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/05/Class文件结构/" title="JVM原理 篇二 Class文件结构">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  JVM原理 篇二 Class文件结构</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/05/maven/"  title="maven 配置和常用命令">
+<a href="/2015/12/27/容器/"  title="容器">
  <strong>NEXT:</strong><br/> 
- <span>maven 配置和常用命令
+ <span>容器
 </span>
 </a>
 </div>
@@ -180,7 +140,7 @@ JCTree的属性Tree <span class="string">tag:</span>每个语法节点都会以�
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_Javac_编译原理"><span class="toc-number">1.</span> <span class="toc-text">1. Javac 编译原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_词法分析：如，package_zxy-demo-example"><span class="toc-number">2.</span> <span class="toc-text">2. 词法分析：如，package zxy.demo.example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_语法分析"><span class="toc-number">3.</span> <span class="toc-text">3. 语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_语义分析"><span class="toc-number">4.</span> <span class="toc-text">4. 语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_代码生成器"><span class="toc-number">5.</span> <span class="toc-text">5. 代码生成器</span></a></li></ol>
+  
   </div>
 
 <div id="asidepart">
