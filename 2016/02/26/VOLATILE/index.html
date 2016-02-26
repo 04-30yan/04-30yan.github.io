@@ -78,7 +78,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-02-26T05:44:38.000Z" itemprop="datePublished">2016-02-26</time>
-    更新日期:<time datetime="2016-02-26T07:08:02.223Z" itemprop="dateModified">2016-02-26</time>
+    更新日期:<time datetime="2016-02-26T07:29:44.148Z" itemprop="dateModified">2016-02-26</time>
     
   </p>
 </header>
@@ -97,7 +97,8 @@
 </code></pre><h3 id="3-重排序：">3.重排序：</h3><pre><code>只要程序的最终结果等于它在严格的顺序化环境下的结果，那么指令的执行顺序就可能与代码的顺序不一致。多线程的
 环境下，谁也想不到那个任务会先执行，执行多久。
 </code></pre><h3 id="4-使用原则：">4.使用原则：</h3><p> （1）.对变量的写入不依赖于变量的当前值（不会先检查再更新），或者保证只有有一个线程更新变量的值<br> （2）.该变量不会和其他变量一起纳入不变性条件（在创建后其状态不可改变）<br> （3）.在访问该变量时不用加锁</p>
-<h3 id="5-一般用法：">5.一般用法：</h3><pre><code>一般用作某个操作完成或发生中断，等状态信息
+<h3 id="5-一般用法：">5.一般用法：</h3><pre><code>一般用作某个操作完成或发生中断，等状态信息，比如：ReentrantLock的实现依赖于java同步器框架AQS。
+AQS使用一个整型的volatile变量（命名为<span class="keyword">state</span>）来维护同步状态
 </code></pre><h3 id="6-volatile_读写内存语义及其实现">6.volatile 读写内存语义及其实现</h3><p> <a href="https://segmentfault.com/a/1190000000453976" target="_blank" rel="external">volatile 读写内存语义</a></p>
   
 	</div>
