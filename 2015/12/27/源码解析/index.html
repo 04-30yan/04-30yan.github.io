@@ -78,7 +78,7 @@ public final class String 说明String 是不可变的，类中每个看起来�
     </p>
   <p class="article-time">
     <time datetime="2015-12-27T06:39:52.000Z" itemprop="datePublished">2015-12-27</time>
-    更新日期:<time datetime="2015-12-27T12:21:19.761Z" itemprop="dateModified">2015-12-27</time>
+    更新日期:<time datetime="2016-02-27T07:08:39.763Z" itemprop="dateModified">2016-02-27</time>
     
   </p>
 </header>
@@ -105,7 +105,7 @@ public final class String 说明String 是不可变的，类中每个看起来�
 </li>
 </ul>
 <h3 id="2-StringBuilder">2.StringBuilder</h3><ul>
-<li>StringBuilder是从StringBuffer那里演进过来的，StringBuffer允许采用多线程的方式执行添加和删除字符的操作，<br>但是这种情况比较少，StringBuilder单线程，</li>
+<li>StringBuilder是从StringBuffer那里演进过来的，StringBuffer是线程安全的，但是StringBuilder并不是线程安全</li>
 <li>StringBuilder，其内部采用动态数组的形式实现，操作的是数组本身</li>
 <li><p>实现：<br>  public AbstractStringBuilder append(String str) {</p>
 <pre><code><span class="keyword">if</span> (<span class="keyword">str</span> == <span class="keyword">null</span>) <span class="keyword">str</span> = <span class="string">"null"</span>;
