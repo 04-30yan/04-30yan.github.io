@@ -11,8 +11,7 @@
     
     <meta name="description" content="1.总述
 
-Iterator:遍历并选择序列中的对象，只可以向后遍历的迭代器只有三个方法，hasNext()：判断有没有元素next()：取出下一个remove()：将迭代器新近返回的元素在原列表中删除，所以在使用remove()方法前必须使用next().
-Collection:继承接口Itera">
+Iterator:遍历并选择序列中的对象，只可以向后遍历的迭代器（ListIterator extends Iterator 可以前后遍历）只有三个方法：hasNext()：判断有没有元素next()：取出下一个,到达集合末尾抛出异常remove()：将迭代器新近返回的元素在原列表中删除">
     
     
     
@@ -78,7 +77,7 @@ Collection:继承接口Itera">
     </p>
   <p class="article-time">
     <time datetime="2015-12-27T09:10:14.000Z" itemprop="datePublished">2015-12-27</time>
-    更新日期:<time datetime="2016-02-25T07:24:52.549Z" itemprop="dateModified">2016-02-25</time>
+    更新日期:<time datetime="2016-03-17T07:30:44.070Z" itemprop="dateModified">2016-03-17</time>
     
   </p>
 </header>
@@ -87,15 +86,31 @@ Collection:继承接口Itera">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-总述"><span class="toc-number">1.</span> <span class="toc-text">1.总述</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-总述"><span class="toc-number">1.</span> <span class="toc-text">1.总述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Iterator"><span class="toc-number">2.</span> <span class="toc-text">2.Iterator</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#(1)-访问方式："><span class="toc-number">2.0.1.</span> <span class="toc-text">(1).访问方式：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#(2)-fail-fast"><span class="toc-number">2.0.2.</span> <span class="toc-text">(2).fail-fast</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-List"><span class="toc-number">3.</span> <span class="toc-text">3.List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Set：不包括重复的元素，_其实Set的实现原理是基于Map上面的"><span class="toc-number">4.</span> <span class="toc-text">4.Set：不包括重复的元素， 其实Set的实现原理是基于Map上面的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Queue:队列先进先出，类似排队,是双端队列"><span class="toc-number">5.</span> <span class="toc-text">5.Queue:队列先进先出，类似排队,是双端队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Map:映射表,键必须唯一"><span class="toc-number">6.</span> <span class="toc-text">5.Map:映射表,键必须唯一</span></a></li></ol>
 		</div>
 		
 		<h3 id="1-总述">1.总述</h3><p><img src="http://hi.csdn.net/attachment/201012/10/0_129197029221PZ.gif" alt="简单的容器分类图"></p>
 <ul>
-<li>Iterator:遍历并选择序列中的对象，只可以向后遍历的迭代器只有三个方法，<br>hasNext()：判断有没有元素<br>next()：取出下一个<br>remove()：将迭代器新近返回的元素在原列表中删除，所以在使用remove()方法前必须使用next().</li>
-<li>Collection:继承接口Iterator,存放一组对象的方式</li>
+<li>Iterator:遍历并选择序列中的对象，只可以向后遍历的迭代器（ListIterator extends Iterator<e> 可以前后遍历）<br>只有三个方法：<br>hasNext()：判断有没有元素<br>next()：取出下一个,到达集合末尾抛出异常<br>remove()：将迭代器新近返回的元素在原列表中删除，所以在使用remove()方法前必须使用next().</e></li>
+<li>Collection:继承接口Iterator,存放一组对象的方式(AbstractCollection size()和iterator()是抽象方法，其他的都实例化)<br>size()<br>isEmpty()<br>contains()<br>containsAll()<br>retainAll(Collection&lt;?&gt; other)删除与other不同的元素，成功返回true<br>add()<br>addAll()<br>remove()<br>removeAll()<br>clear()<br>hashCode()<br>iterator()<br>toArray()</li>
 <li>Map:一组成对的“键值对”对象，可根据键的值来查找对象</li>
 </ul>
+<h3 id="2-Iterator">2.Iterator</h3><h5 id="(1)-访问方式：">(1).访问方式：</h5><pre><code>    顺序的，比如：ArrayList,Iterator从<span class="number">0</span>开始，<span class="function"><span class="title">next</span><span class="params">()</span></span>一次，向后移动一个，
+        将其认为是在两个元素中间，<span class="function"><span class="title">next</span><span class="params">()</span></span>一次，就越过一个元素，返回刚刚越过的元素的引用；
+     每次调用<span class="function"><span class="title">remove</span><span class="params">()</span></span>之前要调用<span class="function"><span class="title">next</span><span class="params">()</span></span>,否则会抛出异常，<span class="function"><span class="title">remove</span><span class="params">()</span></span>一次，删除左边的元素。
+     若是ListIterator，<span class="function"><span class="title">previous</span><span class="params">()</span></span>就向前移动一个，返回刚刚越过的元素，即右边的元素，删除时也是右边
+非顺序的，set,元素会按照某种随机的次序出现，<span class="function"><span class="title">next</span><span class="params">()</span></span>一次，就随机返回一个。
+</code></pre><h5 id="(2)-fail-fast">(2).fail-fast</h5><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E next() &#123;</span><br><span class="line">           checkForComodification();</span><br><span class="line">           <span class="built_in">int</span> i = <span class="built_in">cursor</span>;</span><br><span class="line">           <span class="keyword">if</span> (i &gt;= <span class="built_in">size</span>)</span><br><span class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">           <span class="keyword">Object</span>[] elementData = ArrayList.<span class="keyword">this</span>.elementData;</span><br><span class="line">           <span class="keyword">if</span> (i &gt;= elementData.length)</span><br><span class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">           <span class="built_in">cursor</span> = i + <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">return</span> (E) elementData[lastRet = i];</span><br><span class="line">       &#125;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">void</span> checkForComodification() &#123;</span><br><span class="line">           <span class="keyword">if</span> (modCount != expectedModCount)</span><br><span class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>   迭代器在调用next()和remove()方法时都调用了checkForComodification()，检查在迭代进行时，容器有没有发生结构性的改变<br>   checkForComodification()检测 modCount != expectedModCount ? 若不等则抛出ConcurrentModificationException 异常，从而产生fail-fast机制<br>   AbtractList<br>   protected transient int modCount = 0;<br>   modCount: The number of times this list has been <i>structurally modified</i>.<br>             Structural modifications are those that change the size of the list,<br>             or otherwise perturb it in such a fashion that iterations in progress may yield incorrect results.<br>   ArrayList<br>   expectedModCount = modCount<br>   如果迭代器在迭代时发现容器发生了结构性的变化，不包括set()，就会抛出fail-fast</p>
+<h3 id="3-List">3.List</h3><p>(1).ArrayList：内部是通过数组实现的，一般用于对元素进行快速随机访问,时间复杂度为O(1),删除添加O(n)<br>                    数组的缺点是每个元素之间不能有间隔，当数组大小不满足时需要增加存储能力，<br>            要把已经有数组的数据复制到新的存储空间(大小为*1.5+1)中。<br>(2).LinkedList：内部是通过循环链表实现的，很适合数据的动态插入和删除，时间复杂度为O(1)，访问为O(n)除了第一个元素和最后一个元素（O(1)）<br>                    缺点是随机访问比较慢，要从头进行遍历<br>(3).同步：</p>
+<ul>
+<li>vector和arrayList一样，是使用数组实现，但是vector是线程安全的（sychronized）<br>vector扩容int newCapacity = oldCapacity + ((capacityIncrement &gt; 0) ? capacityIncrement : oldCapacity);capacityIncrement为扩容因子</li>
+<li>同步包装器，List<user> users1 = Collections.synchronizedList(new ArrayList<user>())等</user></user></li>
+<li>java.util.concurrent.*,一般使用，但是CopyOnWriteArrayList效率没有同步包装器好</li>
+</ul>
+<h3 id="4-Set：不包括重复的元素，_其实Set的实现原理是基于Map上面的">4.Set：不包括重复的元素， 其实Set的实现原理是基于Map上面的</h3><p>(1).hashSet：存放顺序和添加进去时候的顺序没有任何关系，<br>就是建立一个“键值对”，“键”就是我们要存入的对象，“值”则是一个常量。这样可以确保， 我们所需要的存储的信息之是“键”<br>return map.put(e, PRESENT)==null;<br>(1).treeSet：对我们的Set中的元素进行排序存放<br>(2).LinkedHashSet：则保持元素的添加顺序</p>
+<h3 id="5-Queue:队列先进先出，类似排队,是双端队列">5.Queue:队列先进先出，类似排队,是双端队列</h3><p>出错是要报错的<br>offer()添加，满了报错<br>peek()弹出，不删除，空了报错<br>poll()弹出，删除，空了报错<br>(1).PriorityQueue：使用小根堆实现，最小的在上面</p>
+<h3 id="5-Map:映射表,键必须唯一">5.Map:映射表,键必须唯一</h3><p>(1).HashMap：对键进行hashCode(),以此来寻找和添加，<br>(2).TreeMap：排序，使用键的顺序对元素进行排序，比如搜索树<br>(3).WeakHashMap：使用弱引用保存键，如果某个对象那个只被key引用，垃圾收集器仍然回收</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -148,7 +163,7 @@ Collection:继承接口Itera">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-总述"><span class="toc-number">1.</span> <span class="toc-text">1.总述</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-总述"><span class="toc-number">1.</span> <span class="toc-text">1.总述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Iterator"><span class="toc-number">2.</span> <span class="toc-text">2.Iterator</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#(1)-访问方式："><span class="toc-number">2.0.1.</span> <span class="toc-text">(1).访问方式：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#(2)-fail-fast"><span class="toc-number">2.0.2.</span> <span class="toc-text">(2).fail-fast</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-List"><span class="toc-number">3.</span> <span class="toc-text">3.List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Set：不包括重复的元素，_其实Set的实现原理是基于Map上面的"><span class="toc-number">4.</span> <span class="toc-text">4.Set：不包括重复的元素， 其实Set的实现原理是基于Map上面的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Queue:队列先进先出，类似排队,是双端队列"><span class="toc-number">5.</span> <span class="toc-text">5.Queue:队列先进先出，类似排队,是双端队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Map:映射表,键必须唯一"><span class="toc-number">6.</span> <span class="toc-text">5.Map:映射表,键必须唯一</span></a></li></ol>
   </div>
 
 <div id="asidepart">
@@ -166,7 +181,7 @@ Collection:继承接口Itera">
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>2</sup></a></li>
 		
-			<li><a href="/tags/java基础/" title="java基础">java基础<sup>1</sup></a></li>
+			<li><a href="/tags/java基础/" title="java基础">java基础<sup>2</sup></a></li>
 		
 			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 		
