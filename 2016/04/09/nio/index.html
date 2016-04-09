@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>VisualVM目录解析 | haitang</title>
+    <title>nio | haitang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="zxy">
     
-    <meta name="description" content="VisualVM(All-in-One Java Troubleshooting Tool)是到目前为止随JDK发布的功能最强大的运行监视和故障处理程序。
+    <meta name="description" content="1. IO和NIO
 
-在jdk/bin目录下，运行Jvisualvm.exe；
-点击“工具-插件-可用插件”，选择需要插件，下载即可；
-打开Java开发工具，会发现">
+IO：分为字节IO，字符IO，网络IO，磁盘IO。每次读取或者写入只能以字节或者字符的方式进行操作。效率低，可能会产生阻塞
+
+NIO：非阻塞IO， 关键类有Selector，Channel，Buffer，channel就像是一个管道流，不论是从buffer读还是写到buffer">
     
     
     
@@ -71,15 +71,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/05/visualVM/" title="VisualVM目录解析" itemprop="url">VisualVM目录解析</a>
+      <a href="/2016/04/09/nio/" title="nio" itemprop="url">nio</a>
   </h1>
   <p class="article-author">By
     
       <a href="https://github.com/04-30yan" title="zxy">zxy</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-04T16:00:00.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T10:52:36.310Z" itemprop="dateModified">2015-12-05</time>
+    <time datetime="2016-04-09T02:40:16.000Z" itemprop="datePublished">2016-04-09</time>
+    更新日期:<time datetime="2016-04-09T12:09:42.665Z" itemprop="dateModified">2016-04-09</time>
     
   </p>
 </header>
@@ -88,23 +88,64 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_IO和NIO"><span class="toc-number">1.</span> <span class="toc-text">1. IO和NIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_NIO工作原理"><span class="toc-number">2.</span> <span class="toc-text">2. NIO工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_Channel"><span class="toc-number">3.</span> <span class="toc-text">3. Channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-_Buffer"><span class="toc-number">3.1.</span> <span class="toc-text">4. Buffer</span></a></li></ol></li></ol>
 		</div>
 		
-		<p>VisualVM(All-in-One Java Troubleshooting Tool)是到目前为止随JDK发布的功能最强大的运行监视和故障处理程序。</p>
-<ol>
-<li>在jdk/bin目录下，运行Jvisualvm.exe；</li>
-<li>点击“工具-插件-可用插件”，选择需要插件，下载即可；</li>
-<li>打开Java开发工具，会发现Java VisualVm的”应用程序-本地“监测到此应用程序；</li>
-<li>点击此应用程序节点，右边窗口就会出现一系列操作；<br>概述：整个虚拟机主要运行数据的概述；<br>监视：用于监视受收集器管理的Java堆和永久代的变化趋势；<br>Java堆：<br>摘要：看到运行时参数，线程堆栈等；<br>类：以类为统计口径，统计类的实例数量、实例信息，双击后，即可在“实例”中看到此类实例的具体信息；<br>线程：遇到线程停顿时，对线程进行监控分析；<br>profiler:程序运行期间方法级的CPU执行时间分析以及内存分析；<br>Btrace:在不停止运行程序的前提下，加入原本并不存在的调试代码，在应用程序中运行相关代码，打开VisualVM，即可看到，点击，即可进行BTrace。</li>
-</ol>
+		<h3 id="1-_IO和NIO">1. IO和NIO</h3><hr>
+<ul>
+<li>IO：分为字节IO，字符IO，网络IO，磁盘IO。每次读取或者写入只能以字节或者字符的方式进行操作。<pre><code>效率低，可能会产生阻塞
+</code></pre></li>
+<li>NIO：非阻塞IO， 关键类有Selector，Channel，Buffer，channel就像是一个管道流，<pre><code>不论是从<span class="keyword">buffer</span>读还是写到<span class="keyword">buffer</span>中，都是通过channel，再通过channel读写的这个过程，
+线程就可以去做一些其他的事情，当<span class="keyword">buffer</span>缓冲完成之后，直接对<span class="keyword">buffer</span>进行操作。
+这样很大程度上加快了速度，减少了阻塞。
+</code></pre><strong>比喻：</strong><br>想要使用大量水，但是水龙头水量很小，所以先使用盆子（buffer）来接，此时人就可以干其他的事；<br>当满的时候，水龙头就可以被其他人使用</li>
+</ul>
+<h3 id="2-_NIO工作原理">2. NIO工作原理</h3><hr>
+<p>selector用来监听多个channel，一个线程处理一个selector，也就意味着一个线程可以同时处理多个channel中的<br>读取一个channel对应一个buffer</p>
+<p><strong>实战：</strong></p>
+<ul>
+<li>应用channel和buffer的读写文件<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> TestNIO &#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> throws IOException </span>&#123;</span><br><span class="line">		FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"D:/极客网/作业/JAVA测试题.docx"</span>);</span><br><span class="line">		FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:/NIO.docx"</span>);</span><br><span class="line">		</span><br><span class="line">		FileChannel readChannel = fis.getChannel();</span><br><span class="line">		FileChannel writeChannel = fos.getChannel();</span><br><span class="line">		</span><br><span class="line">		ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">		<span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">			buffer.clear();</span><br><span class="line">			<span class="keyword">if</span>(readChannel.read(buffer) == -<span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//将buffer的模式从写模式切换成读模式</span></span><br><span class="line">			buffer.flip();</span><br><span class="line">			</span><br><span class="line">			writeChannel.write(buffer);</span><br><span class="line">		&#125;</span><br><span class="line">		readChannel.close();</span><br><span class="line">		writeChannel.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><a href="https://github.com/04-30yan/Demo/blob/master/TestClient.java">客户机请求selector，channel，buffer</a></li>
+<li><a href="https://github.com/04-30yan/Demo/blob/master/TestServer.java">服务器响应</a></li>
+</ul>
+<h3 id="3-_Channel">3. Channel</h3><hr>
+<ul>
+<li>FileChannel: 从文件读数据，或写到文件中去</li>
+<li>DatagramChannel：通过网络进行交互，读或者写，这个网络使用UDP(如：DNS,TFTP,DHCP)</li>
+<li>SocketChannel：通过网络进行数据交互，这个网络使用TCP（http）</li>
+<li>ServerSocketChannel:允许监听TCP连接，就像Web服务器那样，此channel监听的端口监听到有TCP请求则为此请求建立SocketChannel进行交互</li>
+</ul>
+<h4 id="4-_Buffer">4. Buffer</h4><hr>
+<p>(1).类型</p>
+<ul>
+<li>ByteBuffer</li>
+<li>CharBuffer</li>
+<li>MappedByteBuffer</li>
+<li>ShortBuffer</li>
+<li>IntBuffer</li>
+<li>LongBuffer</li>
+<li>FloatBuffer</li>
+<li>DoubleBuffer</li>
+</ul>
+<p>使用时依据要缓存的内容选择合适的buffer<br>(2).主要函数<br>flip():将写模式转换成读模式<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> final Buffer <span class="title">flip</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    limit = position;</span><br><span class="line">    position = <span class="number">0</span>;</span><br><span class="line">    mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>limit：写模式 == capacity；读模式时 == 写模式下的position， 总之都是限制的意思，读模式限制能读的个数，<pre><code>写模式限制能写的个数
+</code></pre></li>
+<li>position 相当于指针的位置，写模式时是当前写入数据所在位置，读模式时是当前读数据的位置读的时候，<pre><code>position++ &lt;= <span class="built_in">limit</span>
+</code></pre></li>
+<li>主要用法<br>写数据到buffer中  -&gt; flip()  -&gt; 从buffer中读取数据  -&gt; clear()删除已读取的数据或者compact()删除所有</li>
+</ul>
+<p>参考<br><a href="http://blog.csdn.net/chenxuegui1234/article/details/17979725" target="_blank" rel="external">CSDN</a><br><a href="http://tutorials.jenkov.com/java-nio/index.html" target="_blank" rel="external">Jakob Jenkov</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JDK插件/">JDK插件</a>
+  <span></span> <a href="/tags/I-O/">I/O</a>
   </div>
 
 
@@ -112,7 +153,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="https://github.com/04-30yan/2015/12/05/visualVM/" data-title="VisualVM目录解析 | haitang" data-tsina="3917196687" class="share clearfix">
+  <div data-url="https://github.com/04-30yan/2016/04/09/nio/" data-title="nio | haitang" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -121,14 +162,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/05/JAVA编译原理/" title="JVM(Java Virtual Machine)原理 篇一 Java编译原理">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  JVM(Java Virtual Machine)原理 篇一 Java编译原理</span>
+
+<div class="next">
+<a href="/2016/03/17/arrayList/"  title="ArrayList">
+ <strong>NEXT:</strong><br/> 
+ <span>ArrayList
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -142,7 +183,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_IO和NIO"><span class="toc-number">1.</span> <span class="toc-text">1. IO和NIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_NIO工作原理"><span class="toc-number">2.</span> <span class="toc-text">2. NIO工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_Channel"><span class="toc-number">3.</span> <span class="toc-text">3. Channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-_Buffer"><span class="toc-number">3.1.</span> <span class="toc-text">4. Buffer</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
