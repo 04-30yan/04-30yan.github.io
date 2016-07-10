@@ -4,16 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>理解c指针以及总结 | haitang</title>
+    <title>c++文件流操作 | haitang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="zxy">
     
-    <meta name="description" content="1. 理解c指针
-个人感觉要想理解指针就必须要理解内存是如何分配的，否则也不算是真的弄懂了吧！1.内存分配
-
-静态存储区在程序编译的时候就已经分配好了，在程序的整个运行期间都存在，比如全局变量、static，还有常量（字符串常量等）
-栈和Java感觉是一样的，主要就是函数的内部内存，包括函数内部的函">
+    <meta name="description" content="文件流操作
+##1、缓冲区不管是输入还是输出，为了减少刷内存操作，一般都有一个缓冲区的，所以一般情况下都是先缓冲到缓冲区，当缓冲区满的时候、文件关闭或者手动刷新的时候才会读写到终端1.1输出函数区别cout &amp;lt;&amp;lt; flush:刷新缓冲区到终端（&amp;lt;&amp;lt;操作符具有调用函数指针的作用">
     
     
     
@@ -71,15 +68,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/06/27/C/理解c指针以及总结/" title="理解c指针以及总结" itemprop="url">理解c指针以及总结</a>
+      <a href="/2016/07/10/C/c-文件流操作/" title="c++文件流操作" itemprop="url">c++文件流操作</a>
   </h1>
   <p class="article-author">By
     
       <a href="https://github.com/04-30yan" title="zxy">zxy</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-06-27T05:04:34.000Z" itemprop="datePublished">2016-06-27</time>
-    更新日期:<time datetime="2016-06-27T09:00:17.794Z" itemprop="dateModified">2016-06-27</time>
+    <time datetime="2016-07-10T06:01:28.000Z" itemprop="datePublished">2016-07-10</time>
+    更新日期:<time datetime="2016-07-10T07:47:19.414Z" itemprop="dateModified">2016-07-10</time>
     
   </p>
 </header>
@@ -88,46 +85,39 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_理解c指针"><span class="toc-number">1.</span> <span class="toc-text">1. 理解c指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_总结"><span class="toc-number">2.</span> <span class="toc-text">2. 总结</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#文件流操作"><span class="toc-number">1.</span> <span class="toc-text">文件流操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="###1、缓冲区"><span class="toc-number">1.1.</span> <span class="toc-text">##1、缓冲区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###2、读写文件"><span class="toc-number">1.2.</span> <span class="toc-text">##2、读写文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###3、刷新缓冲区的时机"><span class="toc-number">1.3.</span> <span class="toc-text">##3、刷新缓冲区的时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###5、定位"><span class="toc-number">1.4.</span> <span class="toc-text">##5、定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###6、主要函数说明"><span class="toc-number">1.5.</span> <span class="toc-text">##6、主要函数说明</span></a></li></ol></li></ol>
 		</div>
 		
-		<h3 id="1-_理解c指针">1. 理解c指针</h3><hr>
-<p>个人感觉要想理解指针就必须要理解内存是如何分配的，否则也不算是真的弄懂了吧！<br>1.内存分配</p>
-<ul>
-<li>静态存储区<br>在程序编译的时候就已经分配好了，在程序的整个运行期间都存在，比如全局变量、static，还有常量（字符串常量等）</li>
-<li>栈<br>和Java感觉是一样的，主要就是函数的内部内存，包括函数内部的函数和局部变量，一般自上而下的顺序进行进栈出栈，<br>一个指令运行完了就出栈回到分支的主干，这部分内存随着自己的生存期进行回收，大多都是函数执行完毕，<br>这部分内存也就随之释放</li>
-<li>堆<br>也叫动态内存分配，这里为了和java堆联系。这部分内存与自己管理，自己进行分配，自己进行回收，<br>内部通过空闲内存链表进行分配</li>
+		<h1 id="文件流操作">文件流操作</h1><hr>
+<h2 id="##1、缓冲区">##1、缓冲区</h2><p>不管是输入还是输出，为了减少刷内存操作，一般都有一个缓冲区的，所以一般情况下都是先缓冲到缓冲区，<br>当缓冲区满的时候、文件关闭或者手动刷新的时候才会读写到终端<br>1.1输出函数区别<br>cout &lt;&lt; flush:刷新缓冲区到终端（&lt;&lt;操作符具有调用函数指针的作用）== cout.flush()<br>cout&lt;&lt;endl:换行+刷新缓冲区到终端 == cout&lt;&lt;”\n”&lt;&lt;flush<br>cout&lt;&lt;”\n”：只有换行的作用，有缓冲区，至于什么时候刷新与操作系统有关，所以一般就使用cout&lt;&lt;endl;<br>printf:没有缓冲区，直接写到终端</p>
+<h2 id="##2、读写文件">##2、读写文件</h2><p>2.1如果文件不是以in的模式打开，那么就会在不存在的时候创建，如果是in的时候，读取，不存在创建也是空文件，<br>所以是没有意义的，所以不存在是不会创建的！<br>app如果是以这种模式打开文件的话，文件指针就是在文件末尾！<br>2.2fstream<br>Ifstream | ofstream fs(file_name)：这种是以默认方式（out）打开文件,因为其构造函数中调用了默认的open()函数<br>或者fs.open()无返回值 if failure the the failbit state flag is set for the stream<br>fs&lt;&lt;    &lt;&lt;endl;(一定要加endl，否则只是写在缓冲区中)<br>2.3stdio.h<br>FILE * file_fd;<br>File_fd = fopen();<br>fprintf(file_fd,format,data);关闭文件的时候刷新或者缓冲区满的时候<br>问题：串行<br>解决：写之后fseek(file_fd,0,SEEK_END)</p>
+<h2 id="##3、刷新缓冲区的时机">##3、刷新缓冲区的时机</h2><ul>
+<li>endl</li>
+<li>flush()</li>
+<li>close()</li>
+<li>程序结束</li>
+<li>缓冲区满</li>
+<li>原本是输出缓冲区转换成输入缓冲区<br>##4、eof()和peek()区别</li>
 </ul>
-<p>2.指针</p>
-<ul>
-<li>字面意思：一段数据或者程序的指示<br>它代表着他们的入口地址，如果程序中直接用他们的地址进行操作，那么场景就会很混乱，可能一不小心，<br>整个程序的内存地址就都混乱了，所以需要有个东西存储他们的内存地址，进行间接操作，也可以通俗的理解成指针即地址</li>
-<li>简单理解<br>例如：整形指针 int * p; int a = 0;先初始化一个地址 p = a;<br>意义再于，从这个指针指向的位置开始的四个字节（int 32位机）解释为一个整数  所以使用指针的时候一定要先初始化</li>
-<li>根据优先级和结合方向进行理解<br>常用：[]（自左向右） &gt; * （自右向左） 分辨指针数组和数组指针</li>
-</ul>
-<ul>
-<li>和 指针，根据结合方向，分辨*p++之类的</li>
-</ul>
-<ul>
-<li>指针和引用的区别<ul>
-<li>指针可以地址偏移，引用不可以</li>
-<li>指针可以改变指向，引用不可以</li>
-<li>引用是某个变量地址的别名</li>
-<li>函数参数，若是指针，相当于地址的拷贝；引用的话，就是真的地址传递可以改变地址</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-_总结">2. 总结</h3><hr>
-<p>1.指针使用之前一定要初始化，即使是NULL，否则使用时候会因为找不到可以进行操作的地址而报段错误<br>2.全局对象多次使用的情况下，一定要在每次使用之前进行置0恢复初始化状态<br>3.一定要释放内存，尤其是自己申请的堆内存<br>4.不要返回指向局部变量的指针或者引用<br>5.在进行指针偏移的时候一定要清楚偏移的每个单位是多少再进行偏移，否则就有可能指向其他的内存<br>6.sizeof<br>sizeof(指针) 就是4 相当于sizeof(char *)<br>sizeof(数组名) 正常字节<br>虽然数组名也是数组起始地址，但是在声明的时候就知道数组的内存大小，有办法计算，<br>但是指针变量在定义的时候是无法知道他的内存大小的，变量！<br>所以在进行函数参数传递的时候，如果只是传递数组名称的话，就会出现数组退化成为指针的情况，因为这个时候就相当于<br>是传递了一个地址，所以进行函数参数传递的时候不仅要传递数组名，还要传递数组长度！</p>
+<hr>
+<p>4.1.EOF()标志位定义在stdio.h中,#define EOF (-1)<br>所以EOF并不是文本中的一个结束符<br>不管是使用get()或者getc()的时候如果返回-1，就是到达文件末尾了<br>返回-1的场景有读取异常;到达文件末尾（已经读取的大小和文件大小比较）<br>当get(c)是最后一个字节的时候，此时可以读取到字符，所以不返回-1，但是再次读取的时候就返回-1了<br>4.2.peek()<br>源码中是通过sgetc()进行预读的，也就是说如果缓冲区的字符如果为空，就返回-1，在读取当前字符的情况下</p>
+<h2 id="##5、定位">##5、定位</h2><p>seekg()设置文件指针到达指定位置<br>tellg()获取当前文件指针的位置</p>
+<h2 id="##6、主要函数说明">##6、主要函数说明</h2><p>6.1 fstream  get()<br>返回值，返回这个字符在流中的地址<br>当没有字符的时候返回NULL(‘\n’也算一个字符，正常的行末尾是有换行符的)<br>当读到最后一个字符的时候就设置了EOF标志位<br>6.2 fstream  getline(buf, length,delmi)<br>默认分隔符是’\n’<br>返回值和get()一样<br>读取length个字符或者遇到分隔符，或者文件末尾就返回<br>内部实现是使用getc()，所以和get()是一样的！</p>
   
 	</div>
 		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c/">c</a>
+  </div>
 
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="https://github.com/04-30yan/2016/06/27/C/理解c指针以及总结/" data-title="理解c指针以及总结 | haitang" data-tsina="3917196687" class="share clearfix">
+  <div data-url="https://github.com/04-30yan/2016/07/10/C/c-文件流操作/" data-title="c++文件流操作 | haitang" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -136,19 +126,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/07/10/C/c-文件流操作/" title="c++文件流操作">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  c++文件流操作</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/04/25/整理总结/"  title="大波面试后的总结">
+<a href="/2016/06/27/C/理解c指针以及总结/"  title="理解c指针以及总结">
  <strong>NEXT:</strong><br/> 
- <span>大波面试后的总结
+ <span>理解c指针以及总结
 </span>
 </a>
 </div>
@@ -165,7 +147,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_理解c指针"><span class="toc-number">1.</span> <span class="toc-text">1. 理解c指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_总结"><span class="toc-number">2.</span> <span class="toc-text">2. 总结</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#文件流操作"><span class="toc-number">1.</span> <span class="toc-text">文件流操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="###1、缓冲区"><span class="toc-number">1.1.</span> <span class="toc-text">##1、缓冲区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###2、读写文件"><span class="toc-number">1.2.</span> <span class="toc-text">##2、读写文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###3、刷新缓冲区的时机"><span class="toc-number">1.3.</span> <span class="toc-text">##3、刷新缓冲区的时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###5、定位"><span class="toc-number">1.4.</span> <span class="toc-text">##5、定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="###6、主要函数说明"><span class="toc-number">1.5.</span> <span class="toc-text">##6、主要函数说明</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
