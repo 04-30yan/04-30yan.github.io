@@ -4,16 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>VisualVM目录解析 | haitang</title>
+    <title>socket_log | haitang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="zxy">
     
-    <meta name="description" content="VisualVM(All-in-One Java Troubleshooting Tool)是到目前为止随JDK发布的功能最强大的运行监视和故障处理程序。
-
-在jdk/bin目录下，运行Jvisualvm.exe；
-点击“工具-插件-可用插件”，选择需要插件，下载即可；
-打开Java开发工具，会发现">
+    <meta name="description" content="1.介绍重要的socket()函数
+1.1.socket():返回一个文件描述符实际上所有的读取都是通过文件描述符来进行读取，文件描述符表示一个进程与打开文件之间对应关系，使用int 唯一标识文件，下次进行读取的时候也通过打开文件时候返回的文件标识符进行读取！网络读取也会是一样的！
+1.2.bind">
     
     
     
@@ -71,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/05/visualVM/" title="VisualVM目录解析" itemprop="url">VisualVM目录解析</a>
+      <a href="/2016/07/10/C/socket-log/" title="socket_log" itemprop="url">socket_log</a>
   </h1>
   <p class="article-author">By
     
       <a href="https://github.com/04-30yan" title="zxy">zxy</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-04T16:00:00.000Z" itemprop="datePublished">2015-12-05</time>
-    更新日期:<time datetime="2015-12-05T10:52:36.310Z" itemprop="dateModified">2015-12-05</time>
+    <time datetime="2016-07-10T07:55:17.000Z" itemprop="datePublished">2016-07-10</time>
+    更新日期:<time datetime="2016-07-10T14:37:53.968Z" itemprop="dateModified">2016-07-10</time>
     
   </p>
 </header>
@@ -88,23 +86,30 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-介绍重要的socket()函数"><span class="toc-number">1.</span> <span class="toc-text">1.介绍重要的socket()函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-socket():返回一个文件描述符"><span class="toc-number">1.1.</span> <span class="toc-text">1.1.socket():返回一个文件描述符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-bind():将ip和port绑定"><span class="toc-number">1.2.</span> <span class="toc-text">1.2.bind():将ip和port绑定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-listen():"><span class="toc-number">1.3.</span> <span class="toc-text">1.3.listen():</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-accept()"><span class="toc-number">1.4.</span> <span class="toc-text">1.5.accept()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2．epoll"><span class="toc-number">2.</span> <span class="toc-text">2．epoll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-read/write"><span class="toc-number">3.</span> <span class="toc-text">3.read/write</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、readn()_和writen()让其返回len个字节(不会丢失数据)"><span class="toc-number">4.</span> <span class="toc-text">4、readn() 和writen()让其返回len个字节(不会丢失数据)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，"><span class="toc-number">5.</span> <span class="toc-text">5.一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，</span></a></li></ol>
 		</div>
 		
-		<p>VisualVM(All-in-One Java Troubleshooting Tool)是到目前为止随JDK发布的功能最强大的运行监视和故障处理程序。</p>
-<ol>
-<li>在jdk/bin目录下，运行Jvisualvm.exe；</li>
-<li>点击“工具-插件-可用插件”，选择需要插件，下载即可；</li>
-<li>打开Java开发工具，会发现Java VisualVm的”应用程序-本地“监测到此应用程序；</li>
-<li>点击此应用程序节点，右边窗口就会出现一系列操作；<br>概述：整个虚拟机主要运行数据的概述；<br>监视：用于监视受收集器管理的Java堆和永久代的变化趋势；<br>Java堆：<br>摘要：看到运行时参数，线程堆栈等；<br>类：以类为统计口径，统计类的实例数量、实例信息，双击后，即可在“实例”中看到此类实例的具体信息；<br>线程：遇到线程停顿时，对线程进行监控分析；<br>profiler:程序运行期间方法级的CPU执行时间分析以及内存分析；<br>Btrace:在不停止运行程序的前提下，加入原本并不存在的调试代码，在应用程序中运行相关代码，打开VisualVM，即可看到，点击，即可进行BTrace。</li>
-</ol>
+		<h3 id="1-介绍重要的socket()函数">1.介绍重要的socket()函数</h3><p><img src="http://img.blog.csdn.net/20160710223126091" alt="socket总述"></p>
+<h4 id="1-1-socket():返回一个文件描述符">1.1.socket():返回一个文件描述符</h4><p>实际上所有的读取都是通过文件描述符来进行读取，文件描述符表示一个进程与打开文件之间对应关系，<br>使用int 唯一标识文件，下次进行读取的时候也通过打开文件时候返回的文件标识符进行读取！网络读取也会是一样的！<br><img src="http://img.blog.csdn.net/20160710223259263" alt="ip转换"></p>
+<h4 id="1-2-bind():将ip和port绑定">1.2.bind():将ip和port绑定</h4><p>网络协议只用规定将接受到的第一个字节作为高位字节，也就是说将高位放在低地址处，采用大端法，<br>但是本机平台一般都采用的是小端法，所以要进行转换<br><img src="http://img.blog.csdn.net/20160710223217152" alt="port大端小端"></p>
+<h4 id="1-3-listen():">1.3.listen():</h4><p>监听fd,把一个未连接的套接字转换成为一个被动套接字，指示内核应接受指向该套接字的连接请求</p>
+<h4 id="1-5-accept()">1.5.accept()</h4><p>用于从已完成队列头返回下一个已完成连接，返回一个全新的fd,用于通信，读写文件流</p>
+<h3 id="2．epoll">2．epoll</h3><p>就是java中的多路复用<br>感觉就像是连接池一样的存在，都是使用一个容器来统一管理<br>使用队列，先把要监听的时间注册到数组中，当有事件准备好的时候，就加到就绪队列中，然后在进行操作<br>2.1.epoll_ctl()：将需要监听的事件注册到数组中<br>2.2.epoll_waite()：返回就绪队列中事件的数目<br>2.3.工作模式：</p>
+<ul>
+<li>水平：默认模式，当有事件准备好的时候，加到就绪列队列中，只要你没对此事件进行处理就会一直通知你</li>
+<li>边缘：相反，边缘模式只通知一次就不会再通知，也就是说如果你没做处理，这一次的事件连带的数据都丢失了</li>
+</ul>
+<p>2.4.注意事项：<br>当此次事件处理之后，不需要监听的时候要从数组中删除这个事件，否则这个事件会一直在</p>
+<h3 id="3-read/write">3.read/write</h3><p>3.1read(fd, buf, len);返回读到的字节数，不管是什么内容只管读就好<br>返回的场景：<br>            读到len个字节<br>            缓冲区为空<br>            出错（一般只处理EINTR异常）<br>3.2write(fd, buf, len);返回已经写进缓冲区的字节<br>返回的场景：<br>           已经写了len个字节<br>           缓冲区满<br>           出错</p>
+<h3 id="4、readn()_和writen()让其返回len个字节(不会丢失数据)">4、readn() 和writen()让其返回len个字节(不会丢失数据)</h3><p>通过判断返回的字节数，是否==len来做控制让其达到一定读写了len字节到缓冲区<br>网络编程基础</p>
+<h3 id="5-一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，">5.一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，</h3><p>具体的用法细节可直接戳<a href="https://github.com/04-30yan/socket_epoll_log">分发日志</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JDK插件/">JDK插件</a>
+  <span></span> <a href="/tags/socket/">socket</a>
   </div>
 
 
@@ -112,7 +117,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="https://github.com/04-30yan/2015/12/05/visualVM/" data-title="VisualVM目录解析 | haitang" data-tsina="3917196687" class="share clearfix">
+  <div data-url="https://github.com/04-30yan/2016/07/10/C/socket-log/" data-title="socket_log | haitang" data-tsina="3917196687" class="share clearfix">
   </div>
 
 </div>
@@ -121,14 +126,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/05/maven/" title="maven 配置和常用命令">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  maven 配置和常用命令</span>
+
+<div class="next">
+<a href="/2016/07/10/C/c-文件流操作/"  title="c文件流操作">
+ <strong>NEXT:</strong><br/> 
+ <span>c文件流操作
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -142,7 +147,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-介绍重要的socket()函数"><span class="toc-number">1.</span> <span class="toc-text">1.介绍重要的socket()函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-socket():返回一个文件描述符"><span class="toc-number">1.1.</span> <span class="toc-text">1.1.socket():返回一个文件描述符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-bind():将ip和port绑定"><span class="toc-number">1.2.</span> <span class="toc-text">1.2.bind():将ip和port绑定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-listen():"><span class="toc-number">1.3.</span> <span class="toc-text">1.3.listen():</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-accept()"><span class="toc-number">1.4.</span> <span class="toc-text">1.5.accept()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2．epoll"><span class="toc-number">2.</span> <span class="toc-text">2．epoll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-read/write"><span class="toc-number">3.</span> <span class="toc-text">3.read/write</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、readn()_和writen()让其返回len个字节(不会丢失数据)"><span class="toc-number">4.</span> <span class="toc-text">4、readn() 和writen()让其返回len个字节(不会丢失数据)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，"><span class="toc-number">5.</span> <span class="toc-text">5.一个分发日志的小demo涉及到socket，读写文件，epoll,博客总结的都是平时自己需要的或者踩过的坑，</span></a></li></ol>
   </div>
 
 <div id="asidepart">

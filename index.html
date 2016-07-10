@@ -64,13 +64,28 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
-    <a href="/2016/07/10/C/c-文件流操作/" title="c++文件流操作" itemprop="url">
+    <a href="/2016/07/10/C/socket-log/" title="socket_log" itemprop="url">
   
-    <h1 itemprop="name">c++文件流操作</h1>
+    <h1 itemprop="name">socket_log</h1>
     
      
-           <p itemprop="description" >文件流操作
-##1、缓冲区不管是输入还是输出，为了减少刷内存操作，一般都有一个缓冲区的，所以一般情况下都是先缓冲到缓冲区，当缓冲区满的时候、文件关闭或者手动刷新的时候才会读写到终端1.1输出函数区别cout &amp;lt;&amp;lt; flush:刷新缓冲区到终端（&amp;lt;&amp;lt;操作符具</p>
+           <p itemprop="description" >1.介绍重要的socket()函数
+1.1.socket():返回一个文件描述符实际上所有的读取都是通过文件描述符来进行读取，文件描述符表示一个进程与打开文件之间对应关系，使用int 唯一标识文件，下次进行读取的时候也通过打开文件时候返回的文件标识符进行读取！网络读取也会是一样的</p>
+        
+    
+    <time datetime="2016-07-10T07:55:17.000Z" itemprop="datePublished">2016-07-10</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2016/07/10/C/c-文件流操作/" title="c文件流操作" itemprop="url">
+  
+    <h1 itemprop="name">c文件流操作</h1>
+    
+     
+           <p itemprop="description" >1、缓冲区
+不管是输入还是输出，为了减少刷内存操作，一般都有一个缓冲区的，所以一般情况下都是先缓冲到缓冲区，当缓冲区满的时候、文件关闭或者手动刷新的时候才会读写到终端1.1输出函数区别cout &amp;lt;&amp;lt; flush:刷新缓冲区到终端（&amp;lt;&amp;lt;操作符具有调用函数指针</p>
         
     
     <time datetime="2016-07-10T06:01:28.000Z" itemprop="datePublished">2016-07-10</time>
@@ -219,25 +234,6 @@ public final class String 说明String 是不可变的，类中每</p>
   </a>
 </section>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/12/05/JAVA编译原理/" title="JVM(Java Virtual Machine)原理 篇一 Java编译原理" itemprop="url">
-  
-    <h1 itemprop="name">JVM(Java Virtual Machine)原理 篇一 Java编译原理</h1>
-    
-     
-           <p itemprop="description" >1. Javac 编译原理javac编译器的任务就是将符合Java语言规范的Java的源代码转化成符合JVM语言规范的class字节码。也就是说将
-源代码转化成JVM能够识别的一种语言，之后JVM负责将其转化成机器能够识别的机器语言。
- 
-Javac编译器工作原理：
- 
-2. 词</p>
-        
-    
-    <time datetime="2015-12-05T06:50:22.000Z" itemprop="datePublished">2015-12-05</time>
-  </a>
-</section>
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -268,6 +264,8 @@ Javac编译器工作原理：
 			<li><a href="/tags/java基础/" title="java基础">java基础<sup>3</sup></a></li>
 		
 			<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+		
+			<li><a href="/tags/socket/" title="socket">socket<sup>1</sup></a></li>
 		
 			<li><a href="/tags/学习成长/" title="学习成长">学习成长<sup>2</sup></a></li>
 		
